@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/privacy_check.py --all
+      - run: python scripts/verify_official_docs.py
+      - run: pytest
+      - run: python -m build
+      - name: Build Skill archive and checksums
+        run: |
+          cd skills
+          zip -r ../dist/gerpgo-erp-skill-${GITHUB_REF_NAME#v}.zip gerpgo-erp
+          cd ../dist
+          sha256sum * > SHA256SUMS
+      - name: Scan release archives
+        run: python scripts/privacy_check.py --archive dist/*.whl dist/*.tar.gz dist/*.zip
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*

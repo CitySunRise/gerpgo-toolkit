@@ -1,0 +1,4 @@
+interface:
+  display_name: "积加 ERP"
+  short_description: "安全配置并调用积加 ERP 只读 CLI 与 Web 登录基础能力"
+  default_prompt: "Use $gerpgo-erp to initialize a local profile safely and run a supported read-only Gerpgo ERP query."
