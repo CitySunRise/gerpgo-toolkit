@@ -17,7 +17,7 @@ T = TypeVar("T")
 def emit_success(data: Any, *, message: str = "success", output_format: str = "json") -> None:
     envelope = ResultEnvelope(ok=True, data=redact(data), message=message)
     if output_format == "json":
-        typer.echo(json.dumps(envelope.to_dict(), ensure_ascii=False, indent=2))
+        typer.echo(_json_text(envelope.to_dict()))
         return
     if output_format == "table":
         typer.echo(_table(envelope.data))
@@ -41,7 +41,7 @@ def execute_safely(
             error_code=exc.code.value,
             trace_id=exc.trace_id or "",
         )
-        typer.echo(json.dumps(envelope.to_dict(), ensure_ascii=False, indent=2), err=False)
+        typer.echo(_json_text(envelope.to_dict()), err=False)
         raise typer.Exit(code=2) from exc
     except (OSError, ValueError) as exc:
         envelope = ResultEnvelope(
@@ -50,7 +50,7 @@ def execute_safely(
             message=str(redact(str(exc))),
             error_code="GERPGO_VALIDATION_ERROR",
         )
-        typer.echo(json.dumps(envelope.to_dict(), ensure_ascii=False, indent=2), err=False)
+        typer.echo(_json_text(envelope.to_dict()), err=False)
         raise typer.Exit(code=2) from exc
     emit_success(result, message=message, output_format=output_format)
     return result
@@ -58,6 +58,17 @@ def execute_safely(
 
 def warn(message: str) -> None:
     print(message, file=sys.stderr)
+
+
+def _json_text(data: Any, *, encoding: str | None = None) -> str:
+    """Keep Unicode readable when possible and valid on legacy Windows consoles."""
+    text = json.dumps(data, ensure_ascii=False, indent=2)
+    target_encoding = encoding or getattr(sys.stdout, "encoding", None) or "utf-8"
+    try:
+        text.encode(target_encoding)
+    except (LookupError, UnicodeEncodeError):
+        return json.dumps(data, ensure_ascii=True, indent=2)
+    return text
 
 
 def _table(data: Any) -> str:

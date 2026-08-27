@@ -6,8 +6,15 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from gerpgo_cli.main import app
+from gerpgo_cli.output import _json_text
 
 runner = CliRunner()
+
+
+def test_json_output_falls_back_to_ascii_for_legacy_windows_console() -> None:
+    rendered = _json_text({"official_name": "查询产品列表"}, encoding="cp1252")
+    assert json.loads(rendered) == {"official_name": "查询产品列表"}
+    rendered.encode("cp1252")
 
 
 def test_capabilities_lists_twelve_read_only_post_endpoints() -> None:
