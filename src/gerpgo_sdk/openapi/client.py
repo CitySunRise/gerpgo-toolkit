@@ -50,25 +50,32 @@ class OpenApiClient:
         self._configure_session()
         self._validate_connection()
 
-    def execute(self, spec: EndpointSpec, payload: dict[str, Any]) -> Any:
+    def execute(self, spec: EndpointSpec, payload: dict[str, Any] | None) -> Any:
         if not spec.read_only:
             raise ValidationError("Only registered read-only endpoints are supported.")
         spec.validate_payload(payload)
         self._ensure_access_token()
-        body = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+        body = (
+            ""
+            if spec.request_body_mode == "none"
+            else json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+        )
         headers = {"accessToken": self._access_token or "", "Content-Type": "application/json"}
         if self.connection.sign_enabled:
             headers["sign"] = hashlib.md5(  # noqa: S324 - required by Gerpgo protocol
                 f"{body}{self.connection.app_key}".encode()
             ).hexdigest()
+        request_kwargs: dict[str, Any] = {}
+        if spec.request_body_mode != "none":
+            request_kwargs["data"] = body.encode("utf-8")
         result = self._request_json(
             spec.method,
             spec.path,
             headers=headers,
-            data=body.encode("utf-8"),
             rate_key=spec.key,
             minimum_interval_seconds=spec.minimum_interval_seconds,
             authenticated=True,
+            **request_kwargs,
         )
         return self._extract_data(result, action=spec.official_name, auth=False)
 

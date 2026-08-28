@@ -9,10 +9,14 @@ from gerpgo_sdk.webapi.auth import WebSessionStore
 
 app = typer.Typer(help="Authenticate a Web session; no Web business endpoints are exposed.")
 
+_PROFILE_HELP = "Profile name; precedence: --profile, GERPGO_PROFILE, prod."
+
 
 @app.command("login")
 def login(
-    profile: str = typer.Option(..., envvar="GERPGO_PROFILE"),
+    profile: str = typer.Option(
+        "prod", envvar="GERPGO_PROFILE", help=_PROFILE_HELP, show_default=True, show_envvar=True
+    ),
     output_format: str = typer.Option("json", "--format"),
 ) -> None:
     def operation() -> dict[str, object]:
@@ -24,7 +28,9 @@ def login(
 
 @app.command("status")
 def status(
-    profile: str = typer.Option(..., envvar="GERPGO_PROFILE"),
+    profile: str = typer.Option(
+        "prod", envvar="GERPGO_PROFILE", help=_PROFILE_HELP, show_default=True, show_envvar=True
+    ),
     output_format: str = typer.Option("json", "--format"),
 ) -> None:
     def operation() -> dict[str, object]:
@@ -36,7 +42,9 @@ def status(
 
 @app.command("logout")
 def logout(
-    profile: str = typer.Option(..., envvar="GERPGO_PROFILE"),
+    profile: str = typer.Option(
+        "prod", envvar="GERPGO_PROFILE", help=_PROFILE_HELP, show_default=True, show_envvar=True
+    ),
     output_format: str = typer.Option("json", "--format"),
 ) -> None:
     def operation() -> dict[str, object]:

@@ -15,6 +15,9 @@ class ErrorCode(StrEnum):
     VALIDATION_ERROR = "GERPGO_VALIDATION_ERROR"
     NOT_IMPLEMENTED = "GERPGO_NOT_IMPLEMENTED"
     PRIVACY_BLOCKED = "GERPGO_PRIVACY_BLOCKED"
+    CATALOG_NOT_FOUND = "GERPGO_CATALOG_NOT_FOUND"
+    CATALOG_AMBIGUOUS = "GERPGO_CATALOG_AMBIGUOUS"
+    PAGE_LIMIT_EXCEEDED = "GERPGO_PAGE_LIMIT_EXCEEDED"
 
 
 class GerpgoError(Exception):
@@ -53,6 +56,21 @@ class AuthError(GerpgoError):
 class ValidationError(GerpgoError):
     def __init__(self, message: str, *, details: dict[str, Any] | None = None) -> None:
         super().__init__(ErrorCode.VALIDATION_ERROR, message, details=details)
+
+
+class CatalogNotFoundError(GerpgoError):
+    def __init__(self, message: str, *, details: dict[str, Any] | None = None) -> None:
+        super().__init__(ErrorCode.CATALOG_NOT_FOUND, message, details=details)
+
+
+class CatalogAmbiguousError(GerpgoError):
+    def __init__(self, message: str, *, details: dict[str, Any] | None = None) -> None:
+        super().__init__(ErrorCode.CATALOG_AMBIGUOUS, message, details=details)
+
+
+class PageLimitExceededError(GerpgoError):
+    def __init__(self, message: str, *, details: dict[str, Any]) -> None:
+        super().__init__(ErrorCode.PAGE_LIMIT_EXCEEDED, message, details=details)
 
 
 class NetworkError(GerpgoError):

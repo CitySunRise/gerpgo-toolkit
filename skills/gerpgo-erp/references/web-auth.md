@@ -1,12 +1,18 @@
 # Web authentication boundary
 
-V0.1 supports only:
+V0.2 supports only:
 
 ```shell
-gerpgo-cli web auth login --profile prod --format json
-gerpgo-cli web auth status --profile prod --format json
-gerpgo-cli web auth logout --profile prod --format json
+gerpgo-cli web auth login --format json
+gerpgo-cli web auth status --format json
+gerpgo-cli web auth logout --format json
 ```
+
+These commands select `prod` when neither `--profile` nor `GERPGO_PROFILE` is
+set. Do not ask the user to confirm `prod` each time. An explicit
+`--profile NAME` overrides the environment and default. A missing selected
+profile is an error; never create one or fall back to OpenAPI, another profile,
+or another authentication path.
 
 `login` is an explicit network action. It retrieves the Gerpgo public key,
 encrypts the locally stored password, authenticates, and stores the resulting

@@ -3,7 +3,13 @@ from __future__ import annotations
 import logging
 
 from gerpgo_sdk.config import ProfileStore, SecretStore
-from gerpgo_sdk.openapi import OpenApiClient, OpenApiConnection, OpenApiService
+from gerpgo_sdk.openapi import (
+    CatalogResolver,
+    CatalogService,
+    OpenApiClient,
+    OpenApiConnection,
+    OpenApiService,
+)
 from gerpgo_sdk.webapi.auth import (
     WebAuthClient,
     WebAuthConnection,
@@ -33,6 +39,28 @@ def openapi_service(
         proxy_url=profile.proxy_url,
     )
     return OpenApiService(OpenApiClient(connection, logger=logger))
+
+
+def catalog_service(
+    profile_name: str,
+    *,
+    profiles: ProfileStore | None = None,
+    secrets: SecretStore | None = None,
+    logger: logging.Logger | None = None,
+) -> CatalogService:
+    return CatalogService(
+        openapi_service(
+            profile_name,
+            profiles=profiles,
+            secrets=secrets,
+            logger=logger,
+        ).client
+    )
+
+
+def catalog_resolver_for_service(service: OpenApiService) -> CatalogResolver:
+    """Share one authenticated client across catalog lookup and business query."""
+    return CatalogResolver(CatalogService(service.client))
 
 
 def web_auth_service(

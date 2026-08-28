@@ -3,24 +3,20 @@ from __future__ import annotations
 import typer
 
 from gerpgo_cli.output import emit_success
-from gerpgo_sdk.openapi import ENDPOINTS
+from gerpgo_sdk.openapi import ENDPOINTS, RESOLUTION_RELATIONS
 
 
 def capabilities(output_format: str = typer.Option("json", "--format")) -> None:
     data = {
-        "openapi": [
-            {
-                "key": spec.key,
-                "official_name": spec.official_name,
-                "method": spec.method,
-                "path": spec.path,
-                "document_id": spec.document_id,
-                "documentation_url": spec.documentation_url,
-                "minimum_interval_seconds": spec.minimum_interval_seconds,
-                "read_only": spec.read_only,
-            }
-            for spec in ENDPOINTS.values()
-        ],
+        "openapi": [spec.contract() for spec in ENDPOINTS.values()],
+        "catalog_resolution": {
+            "matching": "exact_after_trim",
+            "not_found_error": "GERPGO_CATALOG_NOT_FOUND",
+            "ambiguous_error": "GERPGO_CATALOG_AMBIGUOUS",
+            "relations": [relation.to_dict() for relation in RESOLUTION_RELATIONS],
+            "identifier_output_type": "string",
+            "openapi_webapi_fallback": False,
+        },
         "webapi": {
             "authentication": ["login", "status", "logout"],
             "business_endpoints": [],

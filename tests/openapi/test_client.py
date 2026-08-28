@@ -99,3 +99,27 @@ def test_authentication_error_does_not_echo_upstream_identity() -> None:
         client.test_authentication()
 
     assert "DEMO_APP_ID" not in captured.value.message
+
+
+def test_catalog_body_modes_do_not_fall_back_to_get() -> None:
+    session = FakeSession(
+        [
+            FakeResponse({"code": 200, "data": {"accessToken": "DEMO_TOKEN"}}),
+            FakeResponse({"code": 200, "data": []}),
+            FakeResponse({"code": 200, "data": []}),
+        ]
+    )
+    client = OpenApiClient(
+        OpenApiConnection(app_id="DEMO_APP_ID", app_key="DEMO_APP_KEY"),
+        session=session,  # type: ignore[arg-type]
+        limiter=NoWaitLimiter(),  # type: ignore[arg-type]
+    )
+
+    client.execute(get_endpoint("catalog-users"), None)
+    client.execute(get_endpoint("catalog-multiplatform-shops"), {})
+
+    bodyless_method, _, bodyless_kwargs = session.calls[1]
+    empty_method, _, empty_kwargs = session.calls[2]
+    assert bodyless_method == empty_method == "POST"
+    assert "data" not in bodyless_kwargs
+    assert empty_kwargs["data"] == b"{}"

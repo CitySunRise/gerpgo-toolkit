@@ -1,5 +1,16 @@
 # Initialization
 
+Profile selection always follows this precedence:
+
+1. Explicit `--profile NAME`.
+2. `GERPGO_PROFILE`.
+3. Default `prod`.
+
+When the user does not specify a profile, select `prod` without asking for
+confirmation. Only an explicit request for another profile overrides it. CLI
+commands may pass `--profile prod` internally, but users do not need to mention
+the profile in their prompt.
+
 Start with local, non-secret inspection:
 
 ```shell
@@ -8,8 +19,8 @@ gerpgo-cli capabilities --format json
 gerpgo-cli profile list --format json
 ```
 
-If the selected profile does not exist, ask the user to run this in their own
-terminal:
+If the default `prod` profile does not exist, do not create it, switch profiles,
+or fall back silently. Ask the user to run this in their own terminal:
 
 ```shell
 gerpgo-cli profile init prod
