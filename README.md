@@ -106,7 +106,7 @@ falls back to GET for these endpoints.
 Use a stable release rather than `main`:
 
 ```shell
-pipx install "git+https://github.com/CitySunRise/gerpgo-toolkit.git@v0.3.0"
+pipx install "git+https://github.com/CitySunRise/gerpgo-toolkit.git@v0.3.1"
 gerpgo-cli skill install
 gerpgo-cli doctor --read-only
 ```

@@ -3,7 +3,7 @@ name: gerpgo-erp
 description: >-
   Safely configure and use gerpgo-cli for supported read-only Gerpgo OpenAPI queries and Web login-session management. Trigger for gerpgo-erp, Gerpgo, gerpgo-cli, 积加, 积加 ERP, 积加 CLI, 积加开放接口, 积加产品、库存、销售表现、Review、买家之声、利润、ASIN、关键词查询, 积加采购、调拨、物流、装箱、批次、库存流水、STA货件、仓库、报表、多平台查询, and 积加配置、登录、会话. Do not use it to invent or call unsupported Web business APIs.
 metadata:
-  version: "0.3.0"
+  version: "0.3.1"
   requires:
     bins: ["gerpgo-cli"]
   cliHelp: "gerpgo-cli --help"

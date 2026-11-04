@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from rich.text import Text
 from typer.testing import CliRunner
 
 from gerpgo_cli.commands import catalog as catalog_commands
@@ -193,11 +194,11 @@ def test_cli_help_shows_registered_enum_values() -> None:
     for command, expected_parts in cases:
         result = runner.invoke(app, command)
         assert result.exit_code == 0, result.stdout
-        normalized = re.sub(r"\s+", " ", result.stdout)
+        normalized = re.sub(r"\s+", " ", Text.from_ansi(result.stdout).plain)
         assert all(part in normalized for part in expected_parts)
 
     profit_help = runner.invoke(app, ["openapi", "finance", "profit-analysis-v2", "--help"])
-    assert "official default:" in profit_help.stdout
+    assert "official default:" in Text.from_ansi(profit_help.stdout).plain
     assert "AMAZON" in profit_help.stdout
 
 
@@ -467,7 +468,7 @@ def test_statistical_cli_help_describes_runtime_range_and_full_pagination() -> N
             ["openapi", "statistics", command, "--help"],
         )
         assert result.exit_code == 0, result.stdout
-        normalized = " ".join(result.stdout.split())
+        normalized = " ".join(Text.from_ansi(result.stdout).plain.split())
         assert "--page-size" in normalized
         assert "10<=x<=1000" in normalized
         assert f"[default: {default_page_size}]" in normalized

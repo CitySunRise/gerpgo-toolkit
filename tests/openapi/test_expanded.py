@@ -5,6 +5,7 @@ from dataclasses import replace
 from typing import Any
 
 import pytest
+from rich.text import Text
 from typer.testing import CliRunner
 
 from gerpgo_cli.commands import expanded
@@ -184,8 +185,9 @@ def test_all_new_commands_have_help() -> None:
         if spec.cli_route:
             result = runner.invoke(app, ["openapi", *spec.cli_route, "--help"])
             assert result.exit_code == 0, (spec.key, result.stdout)
-            assert "--input" in result.stdout
-            assert "--response" in result.stdout
+            plain_help = Text.from_ansi(result.stdout).plain
+            assert "--input" in plain_help
+            assert "--response" in plain_help
 
 
 def test_every_registered_enum_accepts_official_values_and_rejects_others() -> None:
