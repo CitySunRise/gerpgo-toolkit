@@ -7,7 +7,7 @@ from typing import Any, Literal
 
 from gerpgo_sdk.common.errors import ValidationError
 
-EnumStatus = Literal["documented", "official_not_published", "not_applicable"]
+EnumStatus = Literal["documented", "documented_text", "official_not_published", "not_applicable"]
 RequestBodyMode = Literal["json", "none", "empty_object"]
 EndpointGroup = Literal["business", "catalog"]
 
@@ -115,6 +115,13 @@ class EndpointSpec:
     response_key_fields: tuple[str, ...] = ()
     public_method_verified_date: str | None = None
     metadata_method_difference: str | None = None
+    response_rows_key: str | None = "rows"
+    response_total_key: str | None = "total"
+    cli_route: tuple[str, str] | None = None
+    official_rate_limit: dict[str, Any] | None = None
+    runtime_interval_note: str | None = None
+    request_page_field: str = "page"
+    request_page_size_field: str = "pagesize"
 
     @property
     def documentation_url(self) -> str:
@@ -128,22 +135,26 @@ class EndpointSpec:
 
     @property
     def supports_auto_pagination(self) -> bool:
+        if self.pagination_mode == "cursor":
+            return True
         return (
-            "page" in self.fields and "pagesize" in self.fields
-        ) or "pageInfo" in self.fields
+            self.request_page_field in self.fields
+            and self.request_page_size_field in self.fields
+            or "pageInfo" in self.fields
+        ) and self.response_rows_key is not None
 
     @property
     def effective_runtime_min_page_size(self) -> int | None:
         if self.runtime_min_page_size is not None:
             return self.runtime_min_page_size
-        page_size = self.fields.get("pagesize")
+        page_size = self.fields.get(self.request_page_size_field)
         return int(page_size.minimum) if page_size and page_size.minimum is not None else None
 
     @property
     def effective_runtime_max_page_size(self) -> int | None:
         if self.runtime_max_page_size is not None:
             return self.runtime_max_page_size
-        page_size = self.fields.get("pagesize")
+        page_size = self.fields.get(self.request_page_size_field)
         return int(page_size.maximum) if page_size and page_size.maximum is not None else None
 
     def contract(self) -> dict[str, Any]:
@@ -155,12 +166,17 @@ class EndpointSpec:
             "document_id": self.document_id,
             "documentation_url": self.documentation_url,
             "minimum_interval_seconds": self.minimum_interval_seconds,
+            "official_rate_limit": self.official_rate_limit,
+            "runtime_interval_note": self.runtime_interval_note,
             "read_only": self.read_only,
             "endpoint_group": self.endpoint_group,
             "request_body_mode": self.request_body_mode,
             "response_key_fields": list(self.response_key_fields),
             "public_method_verified_date": self.public_method_verified_date,
             "metadata_method_difference": self.metadata_method_difference,
+            "cli_command": "gerpgo-cli openapi " + " ".join(self.cli_route)
+            if self.cli_route
+            else None,
             "pagination": {
                 "mode": self.pagination_mode,
                 "official_max_page_size": self.official_max_page_size,
@@ -174,6 +190,10 @@ class EndpointSpec:
                 "runtime_verified_date": self.runtime_verified_date,
                 "runtime_verification_note": self.runtime_verification_note,
                 "supports_auto_pagination": self.supports_auto_pagination,
+                "response_rows_key": self.response_rows_key,
+                "response_total_key": self.response_total_key,
+                "request_page_field": self.request_page_field,
+                "request_page_size_field": self.request_page_size_field,
             },
             "combination_constraints": list(self.combination_constraints),
             "fields": [
@@ -216,7 +236,7 @@ class EndpointSpec:
 
     def _validate_field(self, name: str, value: Any, field: FieldSpec) -> None:
         self._validate_type(name, value, field.type_name)
-        values = value if field.type_name.startswith("array<") else [value]
+        values = value if field.type_name.startswith("array") else [value]
         if field.enum_values:
             allowed = {item.value for item in field.enum_values}
             invalid = [item for item in values if item not in allowed]
@@ -241,6 +261,11 @@ class EndpointSpec:
             raise ValidationError(
                 f"Field '{name}' cannot contain more than {field.max_items} items."
             )
+        if field.type_name == "array<object>" and field.children:
+            from dataclasses import replace
+
+            for index, item in enumerate(value):
+                self._validate_field(f"{name}[{index}]", item, replace(field, type_name="object"))
         if field.type_name == "object" and isinstance(value, dict) and field.children:
             children = dict(field.children)
             unknown_children = sorted(set(value) - set(children))
@@ -272,14 +297,16 @@ class EndpointSpec:
                     EndpointSpec._validate_type(f"{name}[{index}]", item, element_type)
         elif type_name == "object":
             valid = isinstance(value, dict)
-        elif type_name in {"int", "long"}:
+        elif type_name in {"int", "long", "short"}:
             valid = isinstance(value, int) and not isinstance(value, bool)
-        elif type_name == "number":
+        elif type_name in {"number", "double", "float", "decimal"}:
             valid = isinstance(value, int | float) and not isinstance(value, bool)
         elif type_name == "boolean":
             valid = isinstance(value, bool)
         elif type_name in {"string", "date", "datetime"}:
             valid = isinstance(value, str)
+        elif type_name == "array":
+            valid = isinstance(value, list)
         if not valid:
             raise ValidationError(f"Field '{name}' must have type {type_name}.")
 
@@ -319,6 +346,11 @@ class EndpointSpec:
                 raise ValidationError(f"Field '{name}' must be greater than zero.")
 
     def _validate_combinations(self, payload: dict[str, Any]) -> None:
+        if self.document_id in {101, 104} and not (
+            (payload.get("startDate") and payload.get("endDate"))
+            or (payload.get("startDataDate") and payload.get("endDataDate"))
+        ):
+            raise ValidationError("Provide startDate/endDate or startDataDate/endDataDate.")
         if self.key in {"search-term-performance", "keyword-performance"} and payload.get(
             "startDateData"
         ) != payload.get("endDateData"):
@@ -543,6 +575,17 @@ ENDPOINTS: MappingProxyType[str, EndpointSpec] = MappingProxyType(
                         max_items=50,
                     ),
                     "filterQuantity": FieldSpec("boolean", description="过滤所有库存指标数据为0"),
+                    "storageCostAuthority": FieldSpec(
+                        "string",
+                        description="成本取值，fifo：先进先出，monEndAveWeight：月末加权，customizeCost：自定义成本，mixedCost：混合成本，与系统页面核对数据注意保持一致，默认取值参考：参数设置->财务->报表默认成本取值类型规则设置",
+                        enum_values=_enum(
+                            ("fifo", "先进先出"),
+                            ("monEndAveWeight", "月末加权"),
+                            ("customizeCost", "自定义成本"),
+                            ("mixedCost", "混合成本"),
+                        ),
+                        enum_status="documented",
+                    ),
                 }
             ),
             official_max_page_size=100,
@@ -557,6 +600,9 @@ ENDPOINTS: MappingProxyType[str, EndpointSpec] = MappingProxyType(
             5.0,
             _fields(
                 {
+                    "marketList": FieldSpec(
+                        "array<int>", description="店铺ID集合", dynamic_identifier=True
+                    ),
                     "groupByType": FieldSpec(
                         "string",
                         True,
@@ -1377,6 +1423,38 @@ ENDPOINTS: MappingProxyType[str, EndpointSpec] = MappingProxyType(
         ),
     }
 )
+
+
+from dataclasses import replace  # noqa: E402
+
+from .expanded import build_endpoints  # noqa: E402
+
+# Current public metadata replaced five historical rate rules with token buckets,
+# without a refill period. Preserve the previously verified 60-second local guard;
+# do not present that guard as a current official refill interval.
+ENDPOINTS = MappingProxyType(
+    {
+        key: replace(
+            spec,
+            official_rate_limit={
+                "defaultRateType": "rateToken",
+                "defaultLimitMax": 3,
+                "defaultLimitTimes": 3,
+                "defaultLimitTypeName": "秒",
+                "defaultLimitPeriod": None,
+            },
+            runtime_interval_note=(
+                "Historical local interval retained at 60 seconds; "
+                "current official token refill period is unpublished."
+            ),
+        )
+        if spec.document_id in {99, 100, 131, 122, 1018}
+        else spec
+        for key, spec in ENDPOINTS.items()
+    }
+)
+
+ENDPOINTS = MappingProxyType({**ENDPOINTS, **build_endpoints(dict(ENDPOINTS))})
 
 
 def get_endpoint(key: str) -> EndpointSpec:

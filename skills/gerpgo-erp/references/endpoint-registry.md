@@ -38,3 +38,7 @@ does not list an interface, do not invoke it.
 The official documents publish maximum page size for most endpoints but do not
 publish a maximum page count. Do not invent one. `--max-pages` is a local safety
 cap for an explicitly requested multi-page operation, not an official limit.
+
+## V0.3
+
+V0.3 freezes the complete public inventory in docs/endpoint-inventory.md. Only entries present in capabilities are registered. Expanded command routing is in [expanded-queries.md](expanded-queries.md).

@@ -9,7 +9,55 @@ Independent, cross-platform tooling for approved Gerpgo ERP interfaces:
 The project does not import or require `cy-automation-core`. The core repository
 was used only to verify established authentication and networking behavior.
 
-## V0.2 boundary
+## V0.3 scope
+
+The complete public inventory is [docs/endpoint-inventory.md](docs/endpoint-inventory.md):
+288 items across 14 categories, including the STA shipment subtree. Of these,
+238 describe reads, 49 mutate business data, and one is authentication.
+210 read contracts are registered (20 retained, 190 added). The remaining 28
+are explicitly blocked by missing rate periods or special parameter transport. A blocked inventory row is not an available command.
+
+New commands use `gerpgo-cli openapi MODULE SERVICE-OPERATION`, for example:
+
+```shell
+gerpgo-cli openapi inventory transfer-page --status draft --create-date-start 2026-01-01 --create-date-end 2026-01-01
+gerpgo-cli openapi logistics delivery-carton-query --item-type 2 --relate-code TF-DEMO
+gerpgo-cli openapi logistics sta-shipment-box-info-query --input request.json
+```
+
+Use `capabilities` for the exact `cli_command`, all official field descriptions,
+enums, nested schemas, and pagination support. Complex filters use `--input`;
+unknown fields and nested fields are rejected. Prose enums that have not been
+converted and reviewed block registration rather than becoming invented choices.
+
+Every business and directory command accepts `--response raw` for the full
+upstream envelope inside the CLI `data`: unknown fields, business identifiers,
+messages and trace IDs are preserved. Only authentication material is protected.
+Use JSON output. Default `--response data` retains v0.2 output compatibility,
+including normalized directory results. Raw directories accept official --input;
+local normalized `--exact-name` filters do not apply to raw results.
+
+With `--response raw --all-pages`, output contains each full upstream envelope in
+`pages` plus `pagination`; business rows are not duplicated in a merged array.
+Normal full queries keep the merged `rows` structure. SDK pagination supports
+documented `rows/total`, `records/total`, and deal/coupon `extObj` cursors. Other
+unverified pagination shapes reject --all-pages rather than guessing. All modes
+enforce max-pages and completeness. Directory pagination now also errors instead
+of silently stopping at the page limit.
+
+Five retained endpoints (99, 100, 131, 122, 1018) now publish token-bucket capacity
+3 but no refill period. Capabilities records those exact official facts separately
+from the historical local 60-second interval. No official refill period is invented;
+new endpoints with missing rate periods remain blocked. Verification compares the
+new token metadata exactly, so future changes still fail the gate.
+
+Official document 2453 explicitly supports transfer cartons through itemType=2.
+4645 exposes batch inventory; 6025 exposes batch flows. These are not claimed to
+be identical to core's transfer-specific serial query. No Web business query is
+added without proof of a missing official capability. See the inventory and
+[live validation report](docs/live-verification.md) for per-interface status.
+
+## Retained V0.2 commands
 
 V0.2 implements twelve registered, read-only business OpenAPI queries and eight
 official directory queries with SDK-owned field contracts, exact name-to-ID
@@ -58,7 +106,7 @@ falls back to GET for these endpoints.
 Use a stable release rather than `main`:
 
 ```shell
-pipx install "git+https://github.com/CitySunRise/gerpgo-toolkit.git@v0.2.0"
+pipx install "git+https://github.com/CitySunRise/gerpgo-toolkit.git@v0.3.0"
 gerpgo-cli skill install
 gerpgo-cli doctor --read-only
 ```

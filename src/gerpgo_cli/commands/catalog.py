@@ -10,6 +10,8 @@ from gerpgo_cli.runtime import catalog_service
 from gerpgo_sdk.openapi import get_endpoint
 from gerpgo_sdk.openapi.catalog import CatalogService, dictionaries
 
+from .catalog_raw import raw_output
+
 app = typer.Typer(help="官方 OpenAPI 目录查询与名称解析数据源；仅输出安全白名单字段。")
 amazon_shops_app = typer.Typer(help="亚马逊店铺目录。")
 users_app = typer.Typer(help="负责人/用户目录。")
@@ -68,6 +70,7 @@ def _exact_name(records: list[Any], name: str | None, *attributes: str) -> list[
 
 
 @amazon_shops_app.command("list")
+@raw_output("catalog-amazon-shops")
 def amazon_shops_list(
     profile: str = _profile(),
     market_id: list[str] | None = typer.Option(
@@ -114,6 +117,7 @@ def amazon_shops_list(
 
 
 @amazon_shops_app.command("names-by-id")
+@raw_output("catalog-amazon-shop-names")
 def amazon_shop_names(
     market_id: list[str] = typer.Option(..., "--market-id", help="站点 ID；按文本接收。"),
     profile: str = _profile(),
@@ -128,6 +132,7 @@ def amazon_shop_names(
 
 
 @amazon_shops_app.command("warehouses-by-id")
+@raw_output("catalog-amazon-shop-warehouses")
 def amazon_shop_warehouses(
     market_id: list[str] = typer.Option(..., "--market-id", help="站点 ID；按文本接收。"),
     profile: str = _profile(),
@@ -142,6 +147,7 @@ def amazon_shop_warehouses(
 
 
 @users_app.command("list")
+@raw_output("catalog-users")
 def users_list(
     profile: str = _profile(),
     exact_name: str | None = typer.Option(
@@ -158,6 +164,7 @@ def users_list(
 
 
 @warehouses_app.command("list")
+@raw_output("catalog-warehouses")
 def warehouses_list(
     profile: str = _profile(),
     name: str | None = typer.Option(None, "--name", help="仓库名称，官方接口为模糊筛选。"),
@@ -207,6 +214,7 @@ def warehouses_list(
 
 
 @brands_app.command("list")
+@raw_output("catalog-brands")
 def brands_list(
     profile: str = _profile(),
     code: str | None = typer.Option(None, help=_field_help("catalog-brands", "code")),
@@ -240,6 +248,7 @@ def brands_list(
 
 
 @categories_app.command("list")
+@raw_output("catalog-categories")
 def categories_list(
     profile: str = _profile(),
     value: list[str] | None = typer.Option(None, "--value", help="品类编码；按文本接收。"),
@@ -271,6 +280,7 @@ def categories_list(
 
 
 @multiplatform_shops_app.command("list")
+@raw_output("catalog-multiplatform-shops")
 def multiplatform_shops_list(
     profile: str = _profile(),
     exact_name: str | None = typer.Option(None, "--exact-name"),

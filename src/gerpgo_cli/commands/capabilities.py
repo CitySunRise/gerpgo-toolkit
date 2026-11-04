@@ -8,6 +8,11 @@ from gerpgo_sdk.openapi import ENDPOINTS, RESOLUTION_RELATIONS
 
 def capabilities(output_format: str = typer.Option("json", "--format")) -> None:
     data = {
+        "response_modes": {
+            "default": "data",
+            "raw": "Full upstream business envelope; credentials protected",
+            "raw_all_pages": "pages plus pagination; no duplicate merged rows",
+        },
         "openapi": [spec.contract() for spec in ENDPOINTS.values()],
         "catalog_resolution": {
             "matching": "exact_after_trim",

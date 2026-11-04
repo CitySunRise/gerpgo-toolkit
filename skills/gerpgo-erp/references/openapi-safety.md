@@ -48,3 +48,7 @@ request headers.
 Never disable TLS verification. Use the profile's `system`, `direct`, or
 `custom` proxy mode instead. Direct mode is scoped to the Gerpgo client session;
 it must not change global proxy settings.
+
+## V0.3
+
+V0.3: --response raw preserves full business envelopes and unknown fields, with authentication credentials protected. --all-pages supports SDK-registered rows, records and cursor structures only. Five retained interfaces have current token-bucket metadata without a refill period; the historical 60-second local interval is separately recorded, not an invented official period.

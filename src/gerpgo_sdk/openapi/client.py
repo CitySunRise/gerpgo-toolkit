@@ -12,10 +12,10 @@ import requests
 
 from gerpgo_sdk.common.errors import ApiError, AuthError, NetworkError, ValidationError
 from gerpgo_sdk.common.rate_limit import PersistentRateLimiter
-from gerpgo_sdk.common.redaction import redact
+from gerpgo_sdk.common.redaction import BusinessResponse, protect_credentials, redact
 from gerpgo_sdk.config.models import ProxyMode
 
-from .registry import EndpointSpec
+from .registry import ENDPOINTS, EndpointSpec
 
 
 @dataclass(slots=True)
@@ -50,9 +50,15 @@ class OpenApiClient:
         self._configure_session()
         self._validate_connection()
 
-    def execute(self, spec: EndpointSpec, payload: dict[str, Any] | None) -> Any:
+    def execute(
+        self, spec: EndpointSpec, payload: dict[str, Any] | None, *, response_mode: str = "data"
+    ) -> Any:
+        if response_mode not in {"data", "raw"}:
+            raise ValidationError("--response must be data or raw.")
         if not spec.read_only:
             raise ValidationError("Only registered read-only endpoints are supported.")
+        if ENDPOINTS.get(spec.key) != spec:
+            raise ValidationError("Only SDK-registered OpenAPI contracts may be executed.")
         spec.validate_payload(payload)
         self._ensure_access_token()
         body = (
@@ -77,7 +83,21 @@ class OpenApiClient:
             authenticated=True,
             **request_kwargs,
         )
-        return self._extract_data(result, action=spec.official_name, auth=False)
+        data = self._extract_data(result, action=spec.official_name, auth=False)
+        if response_mode == "raw":
+            return BusinessResponse(self._protect_known_credentials(protect_credentials(result)))
+        return data
+
+    def _protect_known_credentials(self, value: Any) -> Any:
+        if isinstance(value, dict):
+            return {key: self._protect_known_credentials(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [self._protect_known_credentials(item) for item in value]
+        if isinstance(value, str):
+            for secret in (self.connection.app_key, self._access_token):
+                if secret:
+                    value = value.replace(secret, "[REDACTED]")
+        return value
 
     def test_authentication(self) -> dict[str, Any]:
         self._ensure_access_token(force_refresh=True)

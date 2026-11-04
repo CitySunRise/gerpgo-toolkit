@@ -250,7 +250,7 @@ EXPECTED_CURRENCIES = {
 
 
 def test_registry_matches_official_contracts() -> None:
-    assert set(ENDPOINTS) == set(EXPECTED)
+    assert set(EXPECTED) <= set(ENDPOINTS)
     for key, (name, document_id, path, interval) in EXPECTED.items():
         spec = ENDPOINTS[key]
         assert spec.official_name == name
@@ -259,7 +259,13 @@ def test_registry_matches_official_contracts() -> None:
         assert spec.path == path
         assert spec.minimum_interval_seconds == interval
         assert spec.read_only is True
-        assert set(spec.fields) == EXPECTED_FIELDS[key]
+        assert set(spec.fields) == EXPECTED_FIELDS[key] | (
+            {"marketList"}
+            if key == "sales-performance"
+            else {"storageCostAuthority"}
+            if key == "product-inventory"
+            else set()
+        )
         for field in spec.fields.values():
             assert field.type_name
             assert field.description
@@ -344,7 +350,7 @@ def test_documented_enum_values_and_labels_are_complete() -> None:
         for field_name, field in endpoint.fields.items()
         if field.enum_values
     }
-    assert actual_enum_fields == set(expected) | currency_fields
+    assert set(expected) | currency_fields <= actual_enum_fields
     for (endpoint_key, field_name), values in expected.items():
         field = ENDPOINTS[endpoint_key].fields[field_name]
         assert {item.value: item.label for item in field.enum_values} == values

@@ -56,3 +56,7 @@ Business commands accept exact-name alternatives such as `--shop-name`,
 `--brand-name`, and `--category-name`. Read
 [catalog-resolution.md](catalog-resolution.md) before using them. Never pass the ID
 flag and its name alternative together.
+
+## V0.3
+
+V0.3 adds official modules and SDK-generated cli_command routes. For new business queries and raw JSON, read [expanded-queries.md](expanded-queries.md).

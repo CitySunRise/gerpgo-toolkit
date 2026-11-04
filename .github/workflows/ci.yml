@@ -40,6 +40,7 @@ jobs:
       - run: python -m pip install -e ".[dev]"
       - run: ruff check .
       - run: mypy src
+      - run: python scripts/verify_official_docs.py
       - run: python -m build
       - uses: gitleaks/gitleaks-action@v2
         env:

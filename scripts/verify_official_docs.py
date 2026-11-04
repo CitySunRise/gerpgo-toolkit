@@ -4,6 +4,7 @@ from __future__ import annotations
 import html
 import re
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 import requests
@@ -229,8 +230,14 @@ def _verify_pagination_contract(spec: Any) -> list[str]:
 
 def verify() -> list[str]:
     findings: list[str] = []
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        documents = dict(
+            zip(
+                ENDPOINTS, pool.map(fetch, (s.document_id for s in ENDPOINTS.values())), strict=True
+            )
+        )
     for spec in ENDPOINTS.values():
-        document = fetch(spec.document_id)
+        document = documents[spec.key]
         expected = {
             "apiName": spec.official_name,
             "apiUrl": spec.path,
@@ -260,7 +267,19 @@ def verify() -> list[str]:
                 f"document {spec.document_id} erpMethod: expected {spec.method.casefold()!r}, "
                 f"got {metadata_method!r}"
             )
-        actual_interval = interval_seconds(document)
+        if spec.official_rate_limit is not None:
+            current_rate = {key: document.get(key) for key in spec.official_rate_limit}
+            if current_rate != spec.official_rate_limit:
+                findings.append(f"document {spec.document_id} token-bucket contract changed")
+            if not spec.runtime_interval_note:
+                findings.append(f"document {spec.document_id} lacks an explicit local rate policy")
+            actual_interval = spec.minimum_interval_seconds
+        else:
+            try:
+                actual_interval = interval_seconds(document)
+            except RuntimeError as exc:
+                findings.append(str(exc))
+                actual_interval = None
         if actual_interval != spec.minimum_interval_seconds:
             findings.append(
                 f"document {spec.document_id} rate: expected "

@@ -85,11 +85,11 @@ def test_catalog_service_uses_bodyless_and_empty_object_contracts() -> None:
 def test_catalog_pagination_reaches_final_page() -> None:
     client = RecordingClient(
         [
-            {"rows": [{"code": "BRAND-DEMO-1", "name": "示例品牌一"}], "total": 101},
-            {"rows": [{"code": "BRAND-DEMO-2", "name": "示例品牌二"}], "total": 101},
+            {"rows": [{"code": "BRAND-DEMO-1", "name": "示例品牌一"}], "total": 2},
+            {"rows": [{"code": "BRAND-DEMO-2", "name": "示例品牌二"}], "total": 2},
         ]
     )
-    records = CatalogService(client).brands(all_pages=True)  # type: ignore[arg-type]
+    records = CatalogService(client).brands(all_pages=True, page_size=1)  # type: ignore[arg-type]
 
     assert [record.code for record in records] == ["BRAND-DEMO-1", "BRAND-DEMO-2"]
     assert [call[1]["page"] for call in client.calls if call[1] is not None] == [1, 2]
@@ -116,13 +116,13 @@ def test_each_other_catalog_pager_reaches_final_page(
 ) -> None:
     client = RecordingClient(
         [
-            {"rows": [row_one], "total": 101},
-            {"rows": [row_two], "total": 101},
+            {"rows": [row_one], "total": 2},
+            {"rows": [row_two], "total": 2},
         ]
     )
     service = CatalogService(client)  # type: ignore[arg-type]
 
-    records = getattr(service, method_name)(all_pages=True)
+    records = getattr(service, method_name)(all_pages=True, page_size=1)
 
     assert len(records) == 2
     assert [call[1]["page"] for call in client.calls if call[1] is not None] == [1, 2]

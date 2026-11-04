@@ -165,6 +165,13 @@ class CatalogService:
         all_pages: bool,
         max_pages: int | None,
     ) -> list[RecordT]:
+        if all_pages:
+            from ..service import OpenApiService
+
+            data = OpenApiService(self.client).query(
+                get_endpoint(endpoint_key), payload, all_pages=True, max_pages=max_pages
+            )
+            return normalizer(data)
         if max_pages is not None and max_pages < 1:
             raise ValidationError("max_pages must be at least 1.")
         records: list[RecordT] = []

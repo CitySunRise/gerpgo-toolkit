@@ -22,7 +22,11 @@ class PageClient:
 
 
 def test_all_business_endpoints_define_default_page_sizes() -> None:
-    business = [spec for spec in ENDPOINTS.values() if spec.endpoint_group == "business"]
+    business = [
+        spec
+        for spec in ENDPOINTS.values()
+        if spec.endpoint_group == "business" and spec.cli_route is None
+    ]
     assert len(business) == 12
     assert all(spec.default_page_size is not None for spec in business)
     assert {spec.key: spec.default_page_size for spec in business} == {

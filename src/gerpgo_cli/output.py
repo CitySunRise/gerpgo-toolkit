@@ -8,14 +8,15 @@ from typing import Any, TypeVar
 import typer
 
 from gerpgo_sdk.common.errors import GerpgoError
-from gerpgo_sdk.common.redaction import redact
+from gerpgo_sdk.common.redaction import BusinessResponse, protect_credentials, redact
 from gerpgo_sdk.common.response import ResultEnvelope
 
 T = TypeVar("T")
 
 
 def emit_success(data: Any, *, message: str = "success", output_format: str = "json") -> None:
-    envelope = ResultEnvelope(ok=True, data=redact(data), message=message)
+    safe_data = protect_credentials(data) if isinstance(data, BusinessResponse) else redact(data)
+    envelope = ResultEnvelope(ok=True, data=safe_data, message=message)
     if output_format == "json":
         typer.echo(_json_text(envelope.to_dict()))
         return

@@ -125,6 +125,9 @@ def product_list(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("product-list"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     overrides = {
         "skuList": sku,
@@ -147,6 +150,7 @@ def product_list(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
         resolutions={
             "brandList": ("brand", brand_name or []),
             "categoryList": ("category", category_name or []),
@@ -210,6 +214,9 @@ def product_inventory(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("product-inventory"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "product-inventory",
@@ -232,6 +239,7 @@ def product_inventory(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
         resolutions={
             "warehouseIds": ("warehouse", warehouse_name or []),
             "productManagerAccountIdList": ("user", product_manager_name or []),
@@ -275,6 +283,9 @@ def sales_performance(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("sales-performance"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "sales-performance",
@@ -297,6 +308,7 @@ def sales_performance(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
     )
 
 
@@ -320,6 +332,9 @@ def product_performance(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("product-performance"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "product-performance",
@@ -331,6 +346,7 @@ def product_performance(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
     )
 
 
@@ -383,6 +399,9 @@ def listing_performance(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("listing-performance"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "listing-performance",
@@ -406,6 +425,7 @@ def listing_performance(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
         resolutions={"marketList": ("shop", shop_name or [])},
         country=country,
         country_code=country_code,
@@ -443,6 +463,9 @@ def asin_traffic_statistics(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("asin-traffic-statistics"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "asin-traffic-statistics",
@@ -460,6 +483,7 @@ def asin_traffic_statistics(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
         resolutions={"marketList": ("shop", shop_name or [])},
         country=country,
         country_code=country_code,
@@ -494,6 +518,9 @@ def asin_traffic_data(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("asin-traffic-data"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "asin-traffic-data",
@@ -510,6 +537,7 @@ def asin_traffic_data(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
         resolutions={"marketList": ("shop", shop_name or [])},
         country=country,
         country_code=country_code,
@@ -541,6 +569,9 @@ def search_term_performance(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("search-term-performance"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "search-term-performance",
@@ -552,6 +583,7 @@ def search_term_performance(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
         resolutions={"marketId": ("shop", shop_name)} if shop_name else None,
         country=country,
         country_code=country_code,
@@ -583,6 +615,9 @@ def keyword_performance(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("keyword-performance"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "keyword-performance",
@@ -594,6 +629,7 @@ def keyword_performance(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
         resolutions={"marketId": ("shop", shop_name)} if shop_name else None,
         country=country,
         country_code=country_code,
@@ -651,6 +687,9 @@ def review(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("review"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "review",
@@ -676,6 +715,7 @@ def review(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
         resolutions={"marketIds": ("shop", shop_name or [])},
         country=country,
         country_code=country_code,
@@ -710,6 +750,9 @@ def buyer_voice(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("buyer-voice"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "buyer-voice",
@@ -728,6 +771,7 @@ def buyer_voice(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
         resolutions={"marketIds": ("shop", shop_name or [])},
         country=country,
         country_code=country_code,
@@ -810,6 +854,9 @@ def profit_analysis_v2(
     all_pages: bool = _all_pages_option(),
     max_pages: int = _max_pages_option("profit-analysis-v2"),
     output_format: str = typer.Option("json", "--format"),
+    response_mode: str = typer.Option(
+        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
+    ),
 ) -> None:
     _query(
         "profit-analysis-v2",
@@ -838,6 +885,7 @@ def profit_analysis_v2(
         all_pages,
         max_pages,
         output_format,
+        response_mode=response_mode,
         resolutions={
             "marketIds": ("shop", shop_name or []),
             "categoryIds": ("category", category_name or []),
@@ -858,6 +906,7 @@ def _query(
     all_pages: bool,
     max_pages: int,
     output_format: str,
+    response_mode: str = "data",
     resolutions: dict[str, tuple[str, str | list[str]]] | None = None,
     country: str | None = None,
     country_code: str | None = None,
@@ -888,6 +937,12 @@ def _query(
         if "pageInfo" not in payload:
             payload.setdefault("page", page)
             payload.setdefault("pagesize", page_size)
+        if response_mode == "raw":
+            return service.query(
+                spec, payload, all_pages=all_pages, max_pages=max_pages, response_mode="raw"
+            )
+        if response_mode != "data":
+            raise ValidationError("--response must be data or raw.")
         return service.query(
             spec,
             payload,
@@ -958,3 +1013,18 @@ def _load_payload(input_file: str | None) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise ValidationError("--input must contain one JSON object.")
     return data
+
+
+from .expanded import register  # noqa: E402
+
+register(
+    app,
+    {
+        "product": product_app,
+        "inventory": inventory_app,
+        "statistics": statistics_app,
+        "ads": ads_app,
+        "customer": customer_app,
+        "finance": finance_app,
+    },
+)

@@ -123,3 +123,54 @@ def test_catalog_body_modes_do_not_fall_back_to_get() -> None:
     assert bodyless_method == empty_method == "POST"
     assert "data" not in bodyless_kwargs
     assert empty_kwargs["data"] == b"{}"
+
+
+def test_raw_client_preserves_envelope_and_unknown_fields_without_credentials() -> None:
+    upstream = {
+        "code": 200,
+        "messages": ["DEMO"],
+        "traceId": "DEMO_TRACE_ID",
+        "futureEnvelopeField": {"value": True},
+        "data": {
+            "username": "示例负责人",
+            "sku": "000001",
+            "newField": [1, 2],
+            "accessToken": "DEMO_PRIVATE_TOKEN",
+            "appKey": "DEMO_PRIVATE_KEY",
+        },
+    }
+    session = FakeSession(
+        [
+            FakeResponse({"code": 200, "data": {"accessToken": "DEMO_TOKEN"}}),
+            FakeResponse(upstream),
+        ]
+    )
+    client = OpenApiClient(
+        OpenApiConnection(app_id="DEMO_APP_ID", app_key="DEMO_APP_KEY"),
+        session=session,
+        limiter=NoWaitLimiter(),  # type: ignore[arg-type]
+    )
+    result = client.execute(
+        get_endpoint("product-inventory"), {"page": 1, "pagesize": 1}, response_mode="raw"
+    )
+    assert result["futureEnvelopeField"] == upstream["futureEnvelopeField"]
+    assert result["traceId"] == "DEMO_TRACE_ID"
+    assert result["data"]["username"] == "示例负责人"
+    assert result["data"]["sku"] == "000001"
+    assert result["data"]["accessToken"] == result["data"]["appKey"] == "[REDACTED]"
+
+
+def test_client_rejects_unregistered_contract_before_authentication() -> None:
+    from dataclasses import replace
+
+    from gerpgo_sdk.common.errors import ValidationError
+
+    session = FakeSession([])
+    client = OpenApiClient(
+        OpenApiConnection(app_id="DEMO_APP_ID", app_key="DEMO_APP_KEY"),
+        session=session,
+        limiter=NoWaitLimiter(),  # type: ignore[arg-type]
+    )
+    with pytest.raises(ValidationError, match="SDK-registered"):
+        client.execute(replace(get_endpoint("product-inventory"), path="/unregistered"), {})
+    assert session.calls == []

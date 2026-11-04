@@ -54,3 +54,7 @@ gerpgo-cli doctor --profile prod --connectivity --read-only --format json
 
 The connectivity check obtains an OpenAPI token but does not query business
 data. Web login is always a separate explicit command.
+
+## V0.3
+
+V0.3 keeps profile precedence and existing keyring credentials. Expanded OpenAPI queries need OpenAPI credentials only; raw business JSON never includes authentication tokens.

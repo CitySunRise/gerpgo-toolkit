@@ -33,7 +33,7 @@ COMMANDS = {
 def test_skill_maps_all_registered_endpoints_with_synthetic_examples() -> None:
     command_map = (SKILL_ROOT / "references/command-map.md").read_text(encoding="utf-8")
     parameters = (SKILL_ROOT / "references/endpoint-parameters.md").read_text(encoding="utf-8")
-    assert set(COMMANDS) == set(ENDPOINTS)
+    assert set(COMMANDS) == {key for key, spec in ENDPOINTS.items() if spec.cli_route is None}
     assert parameters.count("Synthetic minimum example:") == 20
     for command in COMMANDS.values():
         assert command in command_map
@@ -52,6 +52,8 @@ def test_skill_enum_snapshot_is_checked_against_sdk_contract() -> None:
             assert_enums(child)
 
     for endpoint in ENDPOINTS.values():
+        if endpoint.cli_route is not None:
+            continue
         for field in endpoint.fields.values():
             assert_enums(field)
     assert "official document publishes these raw values but no Chinese label" in " ".join(

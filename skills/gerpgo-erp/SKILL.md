@@ -1,9 +1,9 @@
 ---
 name: gerpgo-erp
 description: >-
-  Safely configure and use gerpgo-cli for supported read-only Gerpgo OpenAPI queries and Web login-session management. Trigger for gerpgo-erp, Gerpgo, gerpgo-cli, 积加, 积加 ERP, 积加 CLI, 积加开放接口, 积加产品、库存、销售表现、Review、买家之声、利润、ASIN、关键词查询, and 积加配置、登录、会话. Do not use it to invent or call unsupported Web business APIs.
+  Safely configure and use gerpgo-cli for supported read-only Gerpgo OpenAPI queries and Web login-session management. Trigger for gerpgo-erp, Gerpgo, gerpgo-cli, 积加, 积加 ERP, 积加 CLI, 积加开放接口, 积加产品、库存、销售表现、Review、买家之声、利润、ASIN、关键词查询, 积加采购、调拨、物流、装箱、批次、库存流水、STA货件、仓库、报表、多平台查询, and 积加配置、登录、会话. Do not use it to invent or call unsupported Web business APIs.
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
   requires:
     bins: ["gerpgo-cli"]
   cliHelp: "gerpgo-cli --help"
@@ -20,6 +20,17 @@ request until the intent is known. The user does not need to say "use Skill",
 "use CLI", or `$gerpgo-erp` for this Skill to apply.
 
 ## Route the request
+
+- For 积加调拨、采购、物流、装箱、STA 货件、批次、库存流水、仓库、
+  销售订单、财务、报表、多平台查询, read
+  [references/expanded-queries.md](references/expanded-queries.md). Prefer
+  OpenAPI; discover the exact SDK-provided cli_command in capabilities.
+- When the user requests 原始 JSON or 完整 JSON, add `--response raw --format json`.
+  This preserves upstream business data and identifiers; never copy real results
+  into source, tests or release artifacts. Full raw pagination returns `pages`
+  and completeness metadata, not a second merged copy of the business rows.
+- For create/update/delete/approval requests, explain that this version has
+  not implemented writes. Do not construct an unregistered request.
 
 - For first-time setup, missing credentials, profile selection, or doctor
   checks, read [references/initialization.md](references/initialization.md).
@@ -63,8 +74,8 @@ request until the intent is known. The user does not need to say "use Skill",
 - Name resolution is an SDK operation: trim surrounding whitespace and require
   one exact match. Never guess from a fuzzy/partial match. For Amazon shops,
   `--country` or `--country-code` may disambiguate equal `store` or
-  `marketName` values. Never show raw catalog responses; use only the CLI's
-  safe whitelist output.
+  `marketName` values. Normalized catalog output supports name resolution;
+  use explicit --response raw when the user requests complete upstream JSON.
 - Treat “全部”, “完整”, “完整数据”, “完整分析”, “导出”, “所有数据”, or an
   equivalent explicit full-dataset request as full-query intent. Add
   `--all-pages --max-pages 100` automatically; the user does not need to
@@ -81,6 +92,6 @@ request until the intent is known. The user does not need to say "use Skill",
   `gerpgo-cli profile init`.
 - The supported OpenAPI commands are read-only even though the official method
   is POST. Do not infer that an unregistered POST is safe.
-- V0.2 exposes only Web login, local status, and logout. It has no Web business
+- V0.3 exposes only Web login, local status, and logout. It has no Web business
   data commands and no raw request escape hatch.
 - Never silently switch between OpenAPI and Web API.

@@ -26,3 +26,7 @@ If the user asks for Web reports, catalog, shipment, purchasing, export, raw
 request, or another Web business endpoint, state that the installed version
 does not implement it. Do not use browser network calls, a generic HTTP tool,
 or OpenAPI as a silent substitute.
+
+## V0.3
+
+V0.3 adds no Web business APIs. Use official transfer, carton, batch and STA queries in capabilities. Login/status/logout behavior and profile precedence remain unchanged.

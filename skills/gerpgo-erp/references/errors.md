@@ -18,3 +18,7 @@ Read `error_code` before deciding what to do:
 
 Never include credentials or headers in an error report. A trace ID is safe to
 retain unless the user explicitly identifies it as sensitive.
+
+## V0.3
+
+V0.3: unsupported pagination or an unregistered contract returns GERPGO_VALIDATION_ERROR. Do not retry with guessed methods, enums or Web routes. Cursor repetition or missing required cursor is also a validation error.

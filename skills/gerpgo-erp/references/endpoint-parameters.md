@@ -80,6 +80,10 @@ Always re-read capabilities instead of relying on this explanatory snapshot.
 
 ## 2. 查询产品库存
 
+The current official `storageCostAuthority` enum is SDK-owned: `fifo` 先进先出,
+`monEndAveWeight` 月末加权, `customizeCost` 自定义成本, `mixedCost` 混合成本.
+Use capabilities for current values; supply low-frequency filters with --input.
+
 - Command: `gerpgo-cli openapi inventory product`
 - Required by the API: `page` and `pagesize`; CLI defaults are 1 and 100.
 - Obtain before calling: a product, warehouse, or responsible-person scope,
