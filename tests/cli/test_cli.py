@@ -198,7 +198,8 @@ def test_cli_help_shows_registered_enum_values() -> None:
         assert all(part in normalized for part in expected_parts)
 
     profit_help = runner.invoke(app, ["openapi", "finance", "profit-analysis-v2", "--help"])
-    assert "official default:" in Text.from_ansi(profit_help.stdout).plain
+    plain_help = " ".join(Text.from_ansi(profit_help.stdout).plain.replace("│", " ").split())
+    assert "official default:" in plain_help
     assert "AMAZON" in profit_help.stdout
 
 
