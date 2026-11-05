@@ -1,5 +1,8 @@
 # Read-only verification, 2026-11-04
 
+Follow-up: [2026-11-05 verification of the remaining 202 endpoints](live-verification-2026-11-05.md).
+The scope and statements below describe the original November 4 pass only.
+
 These eight endpoints returned successful envelopes and normal data structures
 using the initialized prod profile. Only status and structure flags were emitted.
 No real business values, identifiers, credentials, headers, Trace IDs or exports

@@ -1,24 +1,13 @@
-# Error handling
+# 错误处理
 
-Read `error_code` before deciding what to do:
-
-| Error code | Action |
+| 错误 | 下一步 |
 |---|---|
-| `GERPGO_CONFIG_MISSING` | If the selected profile is `prod`, direct the user to run `gerpgo-cli profile init prod`; never create it or fall back automatically. |
-| `GERPGO_SECRET_UNAVAILABLE` | Let the user repair OS credential-store access or approved environment variables. |
-| `GERPGO_AUTH_FAILED` | Stop; ask the user to verify local credentials and permissions without sharing them. |
-| `GERPGO_RATE_LIMITED` | Respect the reported delay; do not parallelize the endpoint. |
-| `GERPGO_NETWORK_ERROR` | Check connectivity and profile proxy mode; do not disable TLS. |
-| `GERPGO_API_ERROR` | Report the sanitized message, upstream code, and trace ID. |
-| `GERPGO_VALIDATION_ERROR` | Correct documented fields or types; do not guess enums. |
-| `GERPGO_CATALOG_NOT_FOUND` | Check the exact trimmed name or ask for an explicit ID/code; do not try fuzzy alternatives. |
-| `GERPGO_CATALOG_AMBIGUOUS` | Use only the safe candidate name/country/platform hints to ask for a disambiguating condition; never select the first result. |
-| `GERPGO_PAGE_LIMIT_EXCEEDED` | Show `total_records`, `estimated_pages`, `max_pages`, and `estimated_seconds`, then ask whether to retry with a higher explicit `--max-pages`. Do not raise it automatically or loop pages manually. |
-| `GERPGO_NOT_IMPLEMENTED` | Explain the version boundary and stop. |
+| `GERPGO_CONFIG_MISSING` | 让用户在终端运行 `gerpgo-cli profile init prod`，或初始化用户选择的 profile。 |
+| `GERPGO_SECRET_UNAVAILABLE` / `GERPGO_AUTH_FAILED` | 提示检查本机凭证或认证配置。 |
+| `GERPGO_VALIDATION_ERROR` | 对照命令帮助补充或修正入参。 |
+| `GERPGO_CATALOG_NOT_FOUND` / `GERPGO_CATALOG_AMBIGUOUS` | 补充完整名称、国家或 ID。 |
+| `GERPGO_PAGE_LIMIT_EXCEEDED` | 展示总记录数、预计页数和耗时，询问是否提高 `--max-pages`。 |
+| `GERPGO_API_ERROR` | 说明脱敏后的上游错误及所缺条件。 |
+| `GERPGO_RATE_LIMITED` / `GERPGO_NETWORK_ERROR` | 按 CLI 提示等待或检查网络。 |
 
-Never include credentials or headers in an error report. A trace ID is safe to
-retain unless the user explicitly identifies it as sensitive.
-
-## V0.3
-
-V0.3: unsupported pagination or an unregistered contract returns GERPGO_VALIDATION_ERROR. Do not retry with guessed methods, enums or Web routes. Cursor repetition or missing required cursor is also a validation error.
+一次错误只修正有依据的条件，避免猜测参数反复请求。报错时不附带凭证、请求头或真实业务响应。

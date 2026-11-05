@@ -1,97 +1,33 @@
 ---
 name: gerpgo-erp
 description: >-
-  Safely configure and use gerpgo-cli for supported read-only Gerpgo OpenAPI queries and Web login-session management. Trigger for gerpgo-erp, Gerpgo, gerpgo-cli, 积加, 积加 ERP, 积加 CLI, 积加开放接口, 积加产品、库存、销售表现、Review、买家之声、利润、ASIN、关键词查询, 积加采购、调拨、物流、装箱、批次、库存流水、STA货件、仓库、报表、多平台查询, and 积加配置、登录、会话. Do not use it to invent or call unsupported Web business APIs.
+  使用 gerpgo-cli 配置和查询积加 ERP。适用于 gerpgo-erp、Gerpgo、gerpgo-cli、积加、积加 ERP、积加 CLI、积加开放接口，以及积加产品、库存、销售表现、Review、买家之声、利润、ASIN、关键词查询和积加配置、登录、会话，也支持采购、调拨、货件装箱、分类账、报表和多平台查询。
 metadata:
-  version: "0.3.1"
+  version: "0.3.2"
   requires:
     bins: ["gerpgo-cli"]
   cliHelp: "gerpgo-cli --help"
 ---
 
-# Gerpgo ERP
+# 积加 ERP
 
-Use `gerpgo-cli` as the execution boundary. Do not construct Gerpgo URLs or call
-the ERP with a generic HTTP client.
+通过 `gerpgo-cli` 完成查询和登录。用户只说“积加”时，先问要查询或配置什么。
 
-If the user's entire request is only "积加" or another equally ambiguous name-only
-mention, ask what they want to query or configure. Do not run any CLI or ERP
-request until the intent is known. The user does not need to say "use Skill",
-"use CLI", or `$gerpgo-erp` for this Skill to apply.
+## 配置与登录
 
-## Route the request
+- 未指定 profile 时使用 `prod`，无需反复确认。优先级：显式 `--profile` > `GERPGO_PROFILE` > `prod`。
+- 首次使用或缺少配置时，按 [initialization.md](references/initialization.md) 初始化。
+- “积加登录”调用 `gerpgo-cli web auth login`；会话操作见 [web-auth.md](references/web-auth.md)。
 
-- For 积加调拨、采购、物流、装箱、STA 货件、批次、库存流水、仓库、
-  销售订单、财务、报表、多平台查询, read
-  [references/expanded-queries.md](references/expanded-queries.md). Prefer
-  OpenAPI; discover the exact SDK-provided cli_command in capabilities.
-- When the user requests 原始 JSON or 完整 JSON, add `--response raw --format json`.
-  This preserves upstream business data and identifiers; never copy real results
-  into source, tests or release artifacts. Full raw pagination returns `pages`
-  and completeness metadata, not a second merged copy of the business rows.
-- For create/update/delete/approval requests, explain that this version has
-  not implemented writes. Do not construct an unregistered request.
+## 查询
 
-- For first-time setup, missing credentials, profile selection, or doctor
-  checks, read [references/initialization.md](references/initialization.md).
-- For a supported business query, read
-  [references/command-map.md](references/command-map.md), then read
-  [references/endpoint-parameters.md](references/endpoint-parameters.md) for
-  the selected interface and use the exact registered command.
-- When the user supplies a shop, warehouse, responsible-person, brand, or
-  category name instead of an ID/code, read
-  [references/catalog-resolution.md](references/catalog-resolution.md). Prefer the
-  business command's `--*-name` flag; use catalog list commands only when the
-  user explicitly wants to inspect the directory or disambiguate matches.
-- Before transmitting identifiers or choosing retries, read
-  [references/openapi-safety.md](references/openapi-safety.md).
-- For Web login, session status, logout, or a request for a Web business API,
-  read [references/web-auth.md](references/web-auth.md).
-- When a command fails, read [references/errors.md](references/errors.md).
+1. 用 `gerpgo-cli capabilities --format json` 查接口及入参，再看所选命令的 `--help`。枚举、默认值、日期格式以 CLI 为准。
+2. 常用查询见 [command-map.md](references/command-map.md) 和 [endpoint-parameters.md](references/endpoint-parameters.md)；其他模块见 [expanded-queries.md](references/expanded-queries.md)。
+3. 从用户需求确定产品、店铺及日期范围。必要的单号、SKU、ASIN、市场或仓库 ID 可从相关查询取得；仍缺少业务条件时只问缺少的部分，条件齐全后直接调用。
+4. 用户提供名称时优先使用 `--*-name` 参数，详见 [catalog-resolution.md](references/catalog-resolution.md)。标识符按文本处理。
+5. 普通查询默认一页。“全部、完整数据、完整分析、导出、所有数据”自动加 `--all-pages --max-pages 100`。分析全量数据前检查 `pagination.complete=true`、`pagination.truncated=false`；超过上限时展示页数和耗时估计，再询问是否提高上限。
+6. 默认解析 JSON；用户要原始响应时加 `--response raw --format json`。复杂对象用 `--input -` 传入 JSON。
 
-## Invariants
+凭证由用户在终端配置，不写入聊天、命令或仓库。通过 CLI 保持查询范围和串行分页；本工具提供只读 OpenAPI 与 Web 登录会话，不在二者间静默切换。
 
-- Resolve the profile without asking every time: explicit `--profile NAME`
-  takes precedence over `GERPGO_PROFILE`, which takes precedence over the
-  default `prod`. Only an explicit user choice should override that result.
-- When neither the user nor the environment selects a profile, use `prod`. The
-  CLI command may include `--profile prod`, but the user never needs to mention
-  it in their prompt. If `prod` is missing, stop and direct the user to run
-  `gerpgo-cli profile init prod` in their own terminal; never create, switch, or
-  fall back to another profile.
-- Prefer `--format json`; parse the top-level `ok`, `data`, `error_code`, and
-  `trace_id` fields.
-- Before forming a business query, read
-  `gerpgo-cli capabilities --format json`. Its SDK-derived field contract is
-  authoritative for required fields, official enums and labels, date formats,
-  dynamic identifiers, defaults, combinations, pagination, document IDs, and
-  request intervals. Do not rely on memorized values when capabilities is
-  available.
-- Ask only for missing required business conditions or an intentionally narrow
-  query scope. Never guess an enum, dynamic ID, date, SKU, ASIN, shop, market,
-  or warehouse. Once the conditions are complete, make one correctly formed
-  call without asking the user to reconfirm unrelated defaults.
-- Name resolution is an SDK operation: trim surrounding whitespace and require
-  one exact match. Never guess from a fuzzy/partial match. For Amazon shops,
-  `--country` or `--country-code` may disambiguate equal `store` or
-  `marketName` values. Normalized catalog output supports name resolution;
-  use explicit --response raw when the user requests complete upstream JSON.
-- Treat “全部”, “完整”, “完整数据”, “完整分析”, “导出”, “所有数据”, or an
-  equivalent explicit full-dataset request as full-query intent. Add
-  `--all-pages --max-pages 100` automatically; the user does not need to
-  understand pagination flags. Ordinary “查一下” or “看看” requests remain a
-  single page.
-- A successful full query must contain `pagination.complete=true` and
-  `pagination.truncated=false`. Never loop over page numbers outside the CLI or
-  bypass its registered request interval. Never broaden the user's market,
-  shop, SKU, ASIN, warehouse, or date scope to obtain more rows.
-- Keep SKU, MSKU, FNSKU, ASIN, order numbers, and other business identifiers as
-  strings.
-- Never ask the user to paste App Key, password, Cookie, session, JWT, or token
-  into chat. Let the user enter credentials in their terminal through
-  `gerpgo-cli profile init`.
-- The supported OpenAPI commands are read-only even though the official method
-  is POST. Do not infer that an unregistered POST is safe.
-- V0.3 exposes only Web login, local status, and logout. It has no Web business
-  data commands and no raw request escape hatch.
-- Never silently switch between OpenAPI and Web API.
+遇到错误按 [errors.md](references/errors.md) 处理；凭证及输出注意事项见 [openapi-safety.md](references/openapi-safety.md)。

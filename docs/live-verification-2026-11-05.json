@@ -1,0 +1,2543 @@
+{
+  "run_date": "2026-11-05",
+  "profile": "prod",
+  "target_count": 202,
+  "counts": {
+    "success": 178,
+    "blocked_condition": 21,
+    "failed": 3
+  },
+  "results": [
+    {
+      "document_id": 153,
+      "name": "查询亚马逊店铺信息",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 53,
+      "name": "查询产品列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 69,
+      "name": "查询商品信息列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1035,
+      "name": "查询仓库信息列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 67,
+      "name": "查询多平台店铺信息",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 25,
+      "name": "查询所有用户列表",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 70,
+      "name": "查询订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 17,
+      "name": "查询FBA移除订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 4005,
+      "name": "工单列表查询",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 6770,
+      "name": "审批流程列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 43,
+      "name": "查询供应商信息",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 87,
+      "name": "查询采购计划列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 86,
+      "name": "查询采购订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1024,
+      "name": "查询采购订单详情",
+      "status": "blocked_condition",
+      "reason": "no_purchase_order_code_in_scoped_order_or_association_query"
+    },
+    {
+      "document_id": 1025,
+      "name": "查询交货单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_sku_from_product_query"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1027,
+      "name": "查询发货单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1033,
+      "name": "查询FBA货件列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 3686,
+      "name": "销售出库单列表查询",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 211,
+      "name": "查询产品详情",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 773,
+      "name": "FBA库存分类账-详细视图列表查询",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 15,
+      "name": "查询产品库存",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_sku_from_product_query"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 3375,
+      "name": "销售表现",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 100,
+      "name": "搜索词表现",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1092,
+      "name": "Review",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1014,
+      "name": "买家之声列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 2256,
+      "name": "查询财务利润分析V2",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 99,
+      "name": "关键词表现",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 131,
+      "name": "产品表现",
+      "status": "failed",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 2,
+      "json_envelope": true,
+      "upstream_code": 40004,
+      "http_status": 400,
+      "error_code": "GERPGO_API_ERROR",
+      "reason": "upstream_condition_or_contract_rejected"
+    },
+    {
+      "document_id": 140,
+      "name": "商品表现",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 122,
+      "name": "流量统计-ASIN",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1018,
+      "name": "流量数据-ASIN",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1752,
+      "name": "查询品牌资料",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 54,
+      "name": "查询品类信息",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1177,
+      "name": "根据亚马逊店铺id查询店铺名称",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "scalar"
+    },
+    {
+      "document_id": 1179,
+      "name": "根据亚马逊店铺id查询仓库信息",
+      "status": "success",
+      "parameter_categories": [
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 3095,
+      "name": "查询亚马逊VC店铺信息",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 139,
+      "name": "查询汇率设置",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 694,
+      "name": "附件信息链接",
+      "status": "blocked_condition",
+      "reason": "source_document_1366_has_no_customizedAttachment_sample"
+    },
+    {
+      "document_id": 2538,
+      "name": "查询字典管理列表",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 2537,
+      "name": "查询部门列表",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 2885,
+      "name": "查询角色列表",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 3891,
+      "name": "聚合店铺列表查询",
+      "status": "success",
+      "parameter_categories": [
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 4212,
+      "name": "查询系统用户",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 4216,
+      "name": "查询系统角色",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 4220,
+      "name": "查询系统部门",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 4224,
+      "name": "查询系统权限组",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 4563,
+      "name": "获取已授权店铺区域国家",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 4943,
+      "name": "获取大洲国家关系",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 5066,
+      "name": "获取国家省州信息",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 6771,
+      "name": "审批流程进度",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 9,
+      "name": "查询退货订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 8,
+      "name": "查询订单详情",
+      "status": "blocked_condition",
+      "reason": "source_document_70_has_no_orderId_sample"
+    },
+    {
+      "document_id": 1011,
+      "name": "查询退款订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 119,
+      "name": "查询订单发货信息",
+      "status": "blocked_condition",
+      "reason": "source_document_70_has_no_id_sample"
+    },
+    {
+      "document_id": 1048,
+      "name": "查询B2B销售订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 96,
+      "name": "查询FBA配送信息列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 16,
+      "name": "查询FBA移除订单详情",
+      "status": "blocked_condition",
+      "reason": "source_document_17_has_no_warehouseId_sample"
+    },
+    {
+      "document_id": 3003,
+      "name": "查询FBA移除订单-物流信息",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 10,
+      "name": "查询订单费用明细详情",
+      "status": "blocked_condition",
+      "reason": "source_document_70_has_no_id_sample"
+    },
+    {
+      "document_id": 1052,
+      "name": "查询亚马逊费用预览报表",
+      "status": "blocked_condition",
+      "reason": "source_document_69_has_no_msku_sample"
+    },
+    {
+      "document_id": 1382,
+      "name": "查询推广资源列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 120,
+      "name": "查询推广费用列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 2541,
+      "name": "查询换货订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 4139,
+      "name": "查询补单信息",
+      "status": "blocked_condition",
+      "reason": "source_document_70_has_no_parentId_sample"
+    },
+    {
+      "document_id": 4481,
+      "name": "查询商品扩展信息列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 4482,
+      "name": "查询订单审批进度",
+      "status": "blocked_condition",
+      "reason": "source_document_70_has_no_orderId_sample"
+    },
+    {
+      "document_id": 5098,
+      "name": "查询FBA移除订单物流信息列表",
+      "status": "failed",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 2,
+      "json_envelope": true,
+      "upstream_code": 40402,
+      "http_status": 400,
+      "error_code": "GERPGO_API_ERROR",
+      "reason": "upstream_api_not_found"
+    },
+    {
+      "document_id": 5765,
+      "name": "查询DF订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "null"
+    },
+    {
+      "document_id": 5766,
+      "name": "查询PO订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 5768,
+      "name": "查询PO货件列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 104,
+      "name": "秒杀",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 101,
+      "name": "优惠券",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 576,
+      "name": "查询管理促销列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 575,
+      "name": "查询会员折扣列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 103,
+      "name": "查询广告调整日志",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1807,
+      "name": "查询售后工单",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 116,
+      "name": "Feedback",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 135,
+      "name": "查询RMA列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 136,
+      "name": "查询标签管理信息",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 4006,
+      "name": "工单详情查询",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 4010,
+      "name": "客服工单标签查询",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 2280,
+      "name": "查询财务利润分析V2-自定义字段",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 2284,
+      "name": "财务利润分析-月度查询V2",
+      "status": "success",
+      "parameter_categories": [
+        "single_day_date_range",
+        "single_market_from_directory",
+        "single_month_required_by_api"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 309,
+      "name": "财务利润分析-结算明细",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 128,
+      "name": "财务利润分析-分摊记录",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 129,
+      "name": "采购/到库成本分析",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1373,
+      "name": "财务利润-分摊详细数据",
+      "status": "success",
+      "parameter_categories": [
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 1921,
+      "name": "查询SKU关联亚马逊MSKU",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1956,
+      "name": "查询捆绑产品列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1049,
+      "name": "获取MSKU关联关系数据",
+      "status": "blocked_condition",
+      "reason": "root_array_transport_not_verified"
+    },
+    {
+      "document_id": 3419,
+      "name": "产品基准价根据sku和国家查询",
+      "status": "blocked_condition",
+      "reason": "unresolved_required_field_country"
+    },
+    {
+      "document_id": 3420,
+      "name": "产品基准价根据sku查询",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 4604,
+      "name": "查询升级产品列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 2898,
+      "name": "查询SKU关联多平台MSKU",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 4835,
+      "name": "查询父产品信息",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 5070,
+      "name": "查询变体属性",
+      "status": "blocked_condition",
+      "reason": "source_document_211_has_no_attributeName_sample"
+    },
+    {
+      "document_id": 5638,
+      "name": "查询三方仓产品配对信息",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1022,
+      "name": "查询自营仓进销存列表(旧)",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 84,
+      "name": "查询站点库存分布",
+      "status": "success",
+      "parameter_categories": [
+        "single_sku_from_product_query"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 234,
+      "name": "出入库记录V2",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 235,
+      "name": "出入库明细V2",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 2117,
+      "name": "查询调整单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 172,
+      "name": "查询FBA库存列表（旧）",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1399,
+      "name": "查询实物-关联查询",
+      "status": "success",
+      "parameter_categories": [
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 3424,
+      "name": "产品库存历史成本",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 3496,
+      "name": "查询能调拨产品列表",
+      "status": "blocked_condition",
+      "reason": "no_confirmed_numeric_transport_and_correlated_transfer_sample"
+    },
+    {
+      "document_id": 4615,
+      "name": "站点产品库存",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 5136,
+      "name": "查询FBA库存列表V2",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 5654,
+      "name": "查询团队信息",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 6087,
+      "name": "查询Walmart库存列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 6349,
+      "name": "临时批次替换记录查询",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 7706,
+      "name": "查询TikTokFBT库存列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 7726,
+      "name": "查询WayfairCG库存列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 8260,
+      "name": "查询ShopeeFBS库存列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1366,
+      "name": "自发货订单-配货单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1496,
+      "name": "查询销售退货单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 71,
+      "name": "查询自配送订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 118,
+      "name": "自发货订单-销售订单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 3846,
+      "name": "全渠道订单查询",
+      "status": "success",
+      "parameter_categories": [
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 3847,
+      "name": "全渠道订单详情查询",
+      "status": "success",
+      "parameter_categories": [
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 91,
+      "name": "查询供应商产品列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1047,
+      "name": "采购订单-明细看板",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1080,
+      "name": "采购订单快捷入库-查询待入库列表",
+      "status": "blocked_condition",
+      "reason": "root_array_transport_not_verified"
+    },
+    {
+      "document_id": 1740,
+      "name": "查询采购变更列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 90,
+      "name": "查询关联采购订单信息",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 1026,
+      "name": "查询交货单明细",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 152,
+      "name": "查询采购退货单列表V2",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 5262,
+      "name": "查询采购主体",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 5383,
+      "name": "采购退货单原单退换货-查询可退库存列表",
+      "status": "blocked_condition",
+      "reason": "unresolved_required_field_sort"
+    },
+    {
+      "document_id": 5385,
+      "name": "采购退货单非原单退换货-查询可退库存列表",
+      "status": "blocked_condition",
+      "reason": "unresolved_required_field_sort"
+    },
+    {
+      "document_id": 8808,
+      "name": "查询采购订单自定义信息",
+      "status": "blocked_condition",
+      "reason": "no_purchase_order_code_in_scoped_order_or_association_query"
+    },
+    {
+      "document_id": 709,
+      "name": "查询自定义物流商列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 3004,
+      "name": "查询API物流商列表",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 256,
+      "name": "物流-查看费用",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "null"
+    },
+    {
+      "document_id": 1028,
+      "name": "查询发货单明细",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 1034,
+      "name": "查询FBA货件看板",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1029,
+      "name": "发货单-查看实际费用",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1030,
+      "name": "发货单-查看分摊费用",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "null"
+    },
+    {
+      "document_id": 1032,
+      "name": "发货单-查看预估费用",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1250,
+      "name": "发货单-查询估实差异",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1742,
+      "name": "物流费-费用项查询",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "null"
+    },
+    {
+      "document_id": 1745,
+      "name": "查询收发差异单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "null"
+    },
+    {
+      "document_id": 1778,
+      "name": "查询物流费用金额明细",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "null"
+    },
+    {
+      "document_id": 1779,
+      "name": "查询物流费用分摊明细",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "null"
+    },
+    {
+      "document_id": 2539,
+      "name": "查询FBA货件装箱清单",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 3059,
+      "name": "查询物流方式列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 5516,
+      "name": "批量查询包裹单详情及费用",
+      "status": "blocked_condition",
+      "reason": "source_document_1366_has_no_foOrderNo_sample"
+    },
+    {
+      "document_id": 6670,
+      "name": "查询入库预报单(三方仓)",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_sku_from_product_query"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 7610,
+      "name": "报关资料列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 8803,
+      "name": "查询发货单变更目的仓信息",
+      "status": "success",
+      "parameter_categories": [
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 4696,
+      "name": "STA查询货件信息",
+      "status": "blocked_condition",
+      "reason": "no_inbound_plan_id_in_scoped_shipment_or_detail_query"
+    },
+    {
+      "document_id": 4443,
+      "name": "查询STA货件装箱清单",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 63,
+      "name": "查询仓库-FBA仓",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 212,
+      "name": "查询仓库-自营仓",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 64,
+      "name": "查询仓库-供应商仓",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 141,
+      "name": "查询库位信息",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 697,
+      "name": "查询盘点单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1449,
+      "name": "查询入库单列表V2",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1455,
+      "name": "销售出库单-获取面单信息",
+      "status": "blocked_condition",
+      "reason": "root_array_transport_and_source_order_not_verified"
+    },
+    {
+      "document_id": 2536,
+      "name": "查询装配单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 5972,
+      "name": "查询三方仓入库单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 6023,
+      "name": "拣货任务查询",
+      "status": "success",
+      "parameter_categories": [
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 6051,
+      "name": "查询大货出库单",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 6662,
+      "name": "质检单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 666,
+      "name": "查询结算明细报表数据(亚马逊V2结算报告)",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1040,
+      "name": "查询仓库进销存",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1038,
+      "name": "FBA进销存-成本",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_month_required_by_api"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1039,
+      "name": "FBA进销存-数量",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_month_required_by_api"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1051,
+      "name": "查询申请单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 29,
+      "name": "查询长期仓储费",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 30,
+      "name": "查询月度仓储费",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1065,
+      "name": "查询请款池列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 316,
+      "name": "查询对账单管理列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 600,
+      "name": "查询赔偿列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 111,
+      "name": "查询退款单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 112,
+      "name": "查询销售回款分析",
+      "status": "failed",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 2,
+      "json_envelope": true,
+      "upstream_code": 50099,
+      "http_status": 400,
+      "error_code": "GERPGO_API_ERROR",
+      "reason": "upstream_erp_error"
+    },
+    {
+      "document_id": 113,
+      "name": "查询月结算",
+      "status": "success",
+      "parameter_categories": [
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 662,
+      "name": "查询付款申请单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 27,
+      "name": "查询日期范围报告",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 31,
+      "name": "查询付款单列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 301,
+      "name": "广告发票历史记录",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 2388,
+      "name": "查询其他费用分摊列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 3188,
+      "name": "查询自定义成本",
+      "status": "success",
+      "parameter_categories": [
+        "single_month_required_by_api"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "null"
+    },
+    {
+      "document_id": 3197,
+      "name": "查询费用项列表V2",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "array"
+    },
+    {
+      "document_id": 3493,
+      "name": "多渠道订单管理-履约订购数据",
+      "status": "blocked_condition",
+      "reason": "unresolved_required_field_startSettleDate"
+    },
+    {
+      "document_id": 557,
+      "name": "FBA每月库存报告",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 232,
+      "name": "查询FBA进销存列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1276,
+      "name": "查询FBA库容列表(新)",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1436,
+      "name": "FBA库存分类账-一览视图-按日维度列表查询",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1738,
+      "name": "查询FBA上架收货列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1036,
+      "name": "查询库存动作列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 20,
+      "name": "查询FBA盘库列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 21,
+      "name": "查询已接收库存列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 2542,
+      "name": "查询FBA库龄列表",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_day_date_range"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 2658,
+      "name": "FBA库存分类账-一览视图-按月维度列表查询",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_month_required_by_api"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 6344,
+      "name": "延迟交易月度报告",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory",
+        "single_month_required_by_api"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 1377,
+      "name": "查询多平台销售订单",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 5592,
+      "name": "沃尔玛销售订单主列表",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 137,
+      "name": "沃尔玛销售订单",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 138,
+      "name": "沃尔玛退货订单",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 3883,
+      "name": "全渠道商品查询",
+      "status": "success",
+      "parameter_categories": [
+        "first_page_only",
+        "single_market_from_directory",
+        "single_sku_from_product_query"
+      ],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    },
+    {
+      "document_id": 6013,
+      "name": "获取多平台仓库列表",
+      "status": "success",
+      "parameter_categories": [],
+      "exit_code": 0,
+      "json_envelope": true,
+      "upstream_code": 200,
+      "http_status": 200,
+      "structure": "object"
+    }
+  ],
+  "privacy": "No request or response values, credentials, headers or trace IDs stored.",
+  "scope": "Serial registered read-only CLI calls; first page only. Selected date pairs span one day, month-only reports use one month. No date widening. Identifiers come from integrated query results in memory; no raw-request bypass.",
+  "success_criteria": "CLI exit 0, ok=true, upstream code=200, parseable JSON. Empty arrays/null are allowed; business completeness and nonempty rows are not claimed."
+}

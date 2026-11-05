@@ -17,9 +17,9 @@ def test_rate_limiter_waits_across_instances(tmp_path: Path) -> None:
         now[0] += seconds
 
     first = PersistentRateLimiter(tmp_path, clock=clock, sleeper=sleep)
-    first.wait("product-performance", 60.0)
+    first.wait("listing-performance", 60.0)
     now[0] += 10.0
     second = PersistentRateLimiter(tmp_path, clock=clock, sleeper=sleep)
-    second.wait("product-performance", 60.0)
+    second.wait("listing-performance", 60.0)
 
     assert sleeps == [50.0]

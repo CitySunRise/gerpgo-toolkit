@@ -6,7 +6,13 @@ from collections import Counter
 from pathlib import Path
 
 from gerpgo_sdk.openapi import ENDPOINTS
-from gerpgo_sdk.openapi.expanded import WRITE_IDS, catalog_documents, field_spec, route
+from gerpgo_sdk.openapi.expanded import (
+    EXCLUDED_READ_IDS,
+    WRITE_IDS,
+    catalog_documents,
+    field_spec,
+    route,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -53,6 +59,9 @@ def main() -> None:
             blocker = "excluded: changes ERP data"
         elif status == "authentication":
             blocker = "SDK authentication only; never a business raw query"
+        elif doc["id"] in EXCLUDED_READ_IDS:
+            blocker = "not included in the current release"
+            counts["excluded_read"] += 1
         else:
             module, target = route(doc)
             command = f"planned: {module} {target}"

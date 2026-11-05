@@ -9,13 +9,14 @@ Independent, cross-platform tooling for approved Gerpgo ERP interfaces:
 The project does not import or require `cy-automation-core`. The core repository
 was used only to verify established authentication and networking behavior.
 
-## V0.3 scope
+## V0.3.2 scope
 
 The complete public inventory is [docs/endpoint-inventory.md](docs/endpoint-inventory.md):
 288 items across 14 categories, including the STA shipment subtree. Of these,
 238 describe reads, 49 mutate business data, and one is authentication.
-210 read contracts are registered (20 retained, 190 added). The remaining 28
-are explicitly blocked by missing rate periods or special parameter transport. A blocked inventory row is not an available command.
+186 read queries are available (19 common commands and 167 expanded commands).
+The other 52 read entries remain documentation inventory only and are not CLI commands.
+This release removes 24 queries from the previous command set and streamlines the bundled Skill.
 
 New commands use `gerpgo-cli openapi MODULE SERVICE-OPERATION`, for example:
 
@@ -45,11 +46,8 @@ unverified pagination shapes reject --all-pages rather than guessing. All modes
 enforce max-pages and completeness. Directory pagination now also errors instead
 of silently stopping at the page limit.
 
-Five retained endpoints (99, 100, 131, 122, 1018) now publish token-bucket capacity
-3 but no refill period. Capabilities records those exact official facts separately
-from the historical local 60-second interval. No official refill period is invented;
-new endpoints with missing rate periods remain blocked. Verification compares the
-new token metadata exactly, so future changes still fail the gate.
+The SDK handles per-interface request intervals and pagination; capabilities exposes
+the current rules and local defaults.
 
 Official document 2453 explicitly supports transfer cartons through itemType=2.
 4645 exposes batch inventory; 6025 exposes batch flows. These are not claimed to
@@ -57,9 +55,9 @@ be identical to core's transfer-specific serial query. No Web business query is
 added without proof of a missing official capability. See the inventory and
 [live validation report](docs/live-verification.md) for per-interface status.
 
-## Retained V0.2 commands
+## Common business and directory commands
 
-V0.2 implements twelve registered, read-only business OpenAPI queries and eight
+The CLI provides eleven common read-only business OpenAPI queries and eight
 official directory queries with SDK-owned field contracts, exact name-to-ID
 resolution, safe output normalization, official enums, date/combination
 validation, and discoverable CLI capabilities. It also implements
@@ -79,7 +77,6 @@ Every supported business endpoint uses the official `POST` method:
 | 买家之声列表 | `/operation/crm/customerVoice/page` | [document 1014](https://open.gerpgo.com/document?id=1014) |
 | 查询财务利润分析V2 | `/finance/sts/financialAnalysis/page/V2` | [document 2256](https://open.gerpgo.com/document?id=2256) |
 | 关键词表现 | `/operation/ads/adsKeywordAnalytical/page` | [document 99](https://open.gerpgo.com/document?id=99) |
-| 产品表现 | `/operation/sts/productAnalyzeMultiIndex/page` | [document 131](https://open.gerpgo.com/document?id=131) |
 | 商品表现 | `/operation/sts/listingAnalyzeMultiIndex/page` | [document 140](https://open.gerpgo.com/document?id=140) |
 | 流量统计-ASIN | `/operation/sts/traffic/page` | [document 122](https://open.gerpgo.com/document?id=122) |
 | 流量数据-ASIN | `/operation/sts/trafficAnalysis/page` | [document 1018](https://open.gerpgo.com/document?id=1018) |
@@ -106,7 +103,7 @@ falls back to GET for these endpoints.
 Use a stable release rather than `main`:
 
 ```shell
-pipx install "git+https://github.com/CitySunRise/gerpgo-toolkit.git@v0.3.1"
+pipx install "git+https://github.com/CitySunRise/gerpgo-toolkit.git@v0.3.2"
 gerpgo-cli skill install
 gerpgo-cli doctor --read-only
 ```
@@ -166,7 +163,7 @@ Inspect supported capabilities and one command's exact options:
 
 ```shell
 gerpgo-cli capabilities --format json
-gerpgo-cli openapi statistics product-performance --help
+gerpgo-cli openapi statistics listing-performance --help
 ```
 
 `capabilities` is generated from the SDK registry and is the machine-readable
@@ -220,14 +217,9 @@ CLI returns `GERPGO_PAGE_LIMIT_EXCEEDED` before requesting page two. Raising
 `--max-pages` requires an explicit user decision; the CLI never silently
 returns truncated data.
 
-Pagination defaults and runtime constraints are SDK-owned and visible through
-`capabilities`. Current defaults are 200 for 销售表现; 500 for 流量统计-ASIN and
-流量数据-ASIN; and 100 for the other nine business queries. Five
-`/operation/sts/*` endpoints have a runtime-verified 10–1000 range. This is
-recorded separately from the official maximum-100 wording or the official
-sales-performance recommendation of 200. In the current read-only verification,
-500 succeeded for 销售表现 and both traffic interfaces; 产品表现 and 商品表现
-accepted 100 but returned an API error at 500, so their defaults remain 100.
+Pagination defaults are SDK-owned and visible through capabilities. Sales performance
+uses 200 rows; ASIN traffic statistics and ASIN traffic data use 500; the other
+common business queries use 100. Use each command's --help for its effective range.
 
 Complex official filters may be supplied through `--input request.json`. The
 file must contain one JSON object, the target endpoint remains fixed, and

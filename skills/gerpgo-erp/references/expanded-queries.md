@@ -1,40 +1,31 @@
-# Expanded read-only modules
+# 其他查询模块
 
-Search official_name in `gerpgo-cli capabilities --format json` for the user's
-business intent. Each expanded entry supplies its exact cli_command. Modules
-include base, sales, ads, customer, statistics, product, inventory, orders,
-procurement, logistics, warehouse, finance, reports and multiplatform.
+用 `gerpgo-cli capabilities --format json` 按 `official_name` 找到接口，并使用它的 `cli_command`。模块包括基础数据、销售、广告、客服、统计、产品、库存、订单、采购、物流、仓库、财务、报表和多平台。
 
-Synthetic examples:
+## 入参与条件
 
-- 调拨列表: `gerpgo-cli openapi inventory transfer-page --code-list TF-DEMO`
-- 调拨详情: `gerpgo-cli openapi inventory transfer-detail --code TF-DEMO`
-- 调拨装箱: `gerpgo-cli openapi logistics delivery-carton-query --item-type 2 --relate-code TF-DEMO`
-- 批次库存: `gerpgo-cli openapi inventory storage-serial-page --sku-list SKU-DEMO`
-- 批次流水: `gerpgo-cli openapi inventory storage-serial-flow-page --related-orders TF-DEMO`
-- STA: `gerpgo-cli openapi logistics sta-shipment-info-detail --inbound-plan-id PLAN-DEMO`
-- STA 装箱: `gerpgo-cli openapi logistics sta-shipment-box-info-query --input request.json`
-  where request.json is `{"shipmentItemQueryDTOS":[{"shipmentId":"SHIPMENT-DEMO"}]}`.
+- `fields` 提供字段类型、必填项、枚举及日期格式；`pagination` 提供页大小与全量分页选项。具体 CLI 参数见所选命令的 `--help`。
+- 必要单号从对应列表取得，详情使用同一条记录的 ID。SKU、ASIN、市场和仓库 ID 来自产品、商品、店铺及仓库查询。
+- 日期按用户需求选取。只支持月份的接口用 `yyyy-MM`；库存快照可直接按产品或仓库筛选。缺少业务范围时询问所缺条件。
+- 嵌套对象或对象数组用 `--input -` 传入 JSON；普通字段可直接用命令参数。
 
-Required fields, enums, date formats and intervals live only in the SDK. Read
---help for scalar/list filters; use --input file or --input - for nested fields.
-Required fields may come from --input. CLI defaults do not override input values.
-Keep identifiers text in user-facing commands; requests use official numeric types.
+## 示例
 
-Choose OpenAPI first. There is no Web business supplement. Document 2453 allows
-transfer cartons, but batch flows are not asserted identical to core transfer
-inventory serials. Do not construct raw URLs, writes or unsupported methods.
+以下标识均为虚构值：
 
-Ordinary queries fetch one page. Complete intent adds --all-pages --max-pages 100.
-Check supports_auto_pagination. Missing pagination contracts block full queries;
-never implement an AI-side page loop. Deal/coupon use count/nextId with extObj
-as the next cursor and require a documented date range. Preserve the user's scope.
+```shell
+gerpgo-cli openapi inventory transfer-page --status draft --create-date-start 2026-01-01 --create-date-end 2026-01-01
+gerpgo-cli openapi inventory transfer-detail --code TF-DEMO
+gerpgo-cli openapi logistics delivery-carton-query --item-type 2 --relate-code TF-DEMO
+gerpgo-cli openapi inventory storage-serial-page --sku-list SKU-DEMO
+gerpgo-cli openapi inventory storage-serial-flow-page --related-orders TF-DEMO
+gerpgo-cli openapi logistics sta-shipment-box-info-query --input -
+```
 
-For 原始/完整 JSON add --response raw --format json. Single responses preserve
-the upstream envelope inside CLI data. Full queries contain pages and pagination.
-Require complete=true and truncated=false. Business IDs, unknown fields and
-Trace IDs are preserved; App Keys, passwords, tokens, cookies and sessions are
-protected. Never copy real query results into the repository or release files.
+最后一条通过 stdin 传入：
 
-An absent capabilities entry is not implemented. The repository inventory records
-blocked prose enums, missing rate periods and unverified PostParam transport.
+```json
+{"shipmentItemQueryDTOS":[{"shipmentId":"SHIPMENT-DEMO"}]}
+```
+
+普通查询一页；全量查询加 `--all-pages --max-pages 100`。原始 JSON 加 `--response raw --format json`；全量原始响应放在 `pages`，完整性信息放在 `pagination`。

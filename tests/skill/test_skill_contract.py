@@ -1,8 +1,18 @@
 from __future__ import annotations
 
+import json
+import re
+import shlex
 from pathlib import Path
+from typing import Any
 
-from gerpgo_sdk.openapi import ENDPOINTS, FieldSpec
+import pytest
+from typer.testing import CliRunner
+
+from gerpgo_cli.commands import catalog_raw, expanded, openapi
+from gerpgo_cli.main import app
+from gerpgo_sdk.openapi import ENDPOINTS
+from gerpgo_sdk.openapi.expanded import EXCLUDED_READ_IDS, catalog_documents, route
 
 SKILL_ROOT = Path("skills/gerpgo-erp")
 
@@ -15,7 +25,6 @@ COMMANDS = {
     "buyer-voice": "gerpgo-cli openapi customer buyer-voice",
     "profit-analysis-v2": "gerpgo-cli openapi finance profit-analysis-v2",
     "keyword-performance": "gerpgo-cli openapi ads keyword-performance",
-    "product-performance": "gerpgo-cli openapi statistics product-performance",
     "listing-performance": "gerpgo-cli openapi statistics listing-performance",
     "asin-traffic-statistics": "gerpgo-cli openapi statistics asin-traffic-statistics",
     "asin-traffic-data": "gerpgo-cli openapi statistics asin-traffic-data",
@@ -26,65 +35,67 @@ COMMANDS = {
     "catalog-categories": "gerpgo-cli openapi catalog categories list",
     "catalog-multiplatform-shops": "gerpgo-cli openapi catalog multiplatform-shops list",
     "catalog-amazon-shop-names": "gerpgo-cli openapi catalog amazon-shops names-by-id",
-    "catalog-amazon-shop-warehouses": ("gerpgo-cli openapi catalog amazon-shops warehouses-by-id"),
+    "catalog-amazon-shop-warehouses": "gerpgo-cli openapi catalog amazon-shops warehouses-by-id",
 }
 
 
-def test_skill_maps_all_registered_endpoints_with_synthetic_examples() -> None:
+def test_skill_maps_common_commands_with_examples() -> None:
     command_map = (SKILL_ROOT / "references/command-map.md").read_text(encoding="utf-8")
     parameters = (SKILL_ROOT / "references/endpoint-parameters.md").read_text(encoding="utf-8")
     assert set(COMMANDS) == {key for key, spec in ENDPOINTS.items() if spec.cli_route is None}
-    assert parameters.count("Synthetic minimum example:") == 20
+    examples = re.findall(r"示例：`(gerpgo-cli [^`]+)`", parameters)
+    assert len(examples) == len(COMMANDS) == 19
     for command in COMMANDS.values():
         assert command in command_map
-        assert command in parameters
+        assert any(example.startswith(command) for example in examples)
 
 
-def test_skill_enum_snapshot_is_checked_against_sdk_contract() -> None:
+def test_skill_examples_parse_and_validate_without_erp(monkeypatch: pytest.MonkeyPatch) -> None:
+    called = []
+
+    class OfflineService:
+        def query(self, spec: Any, payload: Any, **kwargs: Any) -> dict[str, Any]:
+            spec.validate_payload(payload)
+            called.append(spec.key)
+            return {"code": 200, "data": {}}
+
+    for module in (openapi, catalog_raw, expanded):
+        monkeypatch.setattr(module, "openapi_service", lambda profile: OfflineService())
     parameters = (SKILL_ROOT / "references/endpoint-parameters.md").read_text(encoding="utf-8")
+    examples = re.findall(r"示例：`(gerpgo-cli [^`]+)`", parameters)
+    runner = CliRunner()
+    for example in examples:
+        command = shlex.split(example)[1:] + ["--response", "raw"]
+        result = runner.invoke(app, command)
+        assert result.exit_code == 0, result.stdout
+        assert json.loads(result.stdout)["ok"] is True
+    assert set(called) == set(COMMANDS)
+    assert len(called) == 19
 
-    def assert_enums(field: FieldSpec) -> None:
-        for enum_value in field.enum_values:
-            assert f"`{enum_value.value}`" in parameters
-            if enum_value.label != "官方未提供中文含义":
-                assert enum_value.label in parameters
-        for _, child in field.children:
-            assert_enums(child)
 
-    for endpoint in ENDPOINTS.values():
-        if endpoint.cli_route is not None:
+def test_skill_links_and_removed_commands() -> None:
+    texts = []
+    for path in SKILL_ROOT.rglob("*.md"):
+        text = path.read_text(encoding="utf-8")
+        texts.append(text)
+        for target in re.findall(r"\]\(([^)]+)\)", text):
+            if "://" not in target:
+                assert (path.parent / target).is_file(), (path, target)
+    combined = "\n".join(texts)
+    for doc in catalog_documents():
+        if doc["id"] not in EXCLUDED_READ_IDS:
             continue
-        for field in endpoint.fields.values():
-            assert_enums(field)
-    assert "official document publishes these raw values but no Chinese label" in " ".join(
-        parameters.split()
-    )
+        module, command = route(doc)
+        if doc["id"] == 131:
+            command = "product-performance"
+        assert f"gerpgo-cli openapi {module} {command}" not in combined
+    assert "live-verification" not in combined
 
 
-def test_skill_explains_dynamic_identifiers_and_capabilities_precedence() -> None:
+def test_skill_preserves_full_query_workflow() -> None:
     skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
-    parameters = (SKILL_ROOT / "references/endpoint-parameters.md").read_text(encoding="utf-8")
-    safety = (SKILL_ROOT / "references/openapi-safety.md").read_text(encoding="utf-8")
-    for text in (skill, parameters, safety):
-        assert "gerpgo-cli capabilities --format json" in text
-    assert "dynamic_identifier: true" in safety
-    assert "official_not_published" in safety
-    assert "platformCodes" in parameters
-    assert "official document does not publish a complete enum" in " ".join(parameters.split())
-
-
-def test_skill_routes_full_data_intent_through_cli_pagination() -> None:
-    skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
-    command_map = (SKILL_ROOT / "references/command-map.md").read_text(encoding="utf-8")
-    parameters = (SKILL_ROOT / "references/endpoint-parameters.md").read_text(encoding="utf-8")
-    safety = (SKILL_ROOT / "references/openapi-safety.md").read_text(encoding="utf-8")
-    errors = (SKILL_ROOT / "references/errors.md").read_text(encoding="utf-8")
-    combined = "\n".join((skill, command_map, parameters, safety))
-
-    for intent in ("全部", "完整", "完整分析", "导出", "所有数据"):
-        assert intent in combined
+    for intent in ("全部", "完整数据", "完整分析", "导出", "所有数据"):
+        assert intent in skill
     assert "--all-pages --max-pages 100" in skill
     assert "pagination.complete=true" in skill
     assert "pagination.truncated=false" in skill
-    assert "Never implement an AI-side page loop" in command_map
-    assert "GERPGO_PAGE_LIMIT_EXCEEDED" in errors

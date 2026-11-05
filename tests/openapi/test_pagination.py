@@ -27,7 +27,7 @@ def test_all_business_endpoints_define_default_page_sizes() -> None:
         for spec in ENDPOINTS.values()
         if spec.endpoint_group == "business" and spec.cli_route is None
     ]
-    assert len(business) == 12
+    assert len(business) == 11
     assert all(spec.default_page_size is not None for spec in business)
     assert {spec.key: spec.default_page_size for spec in business} == {
         "product-list": 100,
@@ -38,7 +38,6 @@ def test_all_business_endpoints_define_default_page_sizes() -> None:
         "buyer-voice": 100,
         "profit-analysis-v2": 100,
         "keyword-performance": 100,
-        "product-performance": 100,
         "listing-performance": 100,
         "asin-traffic-statistics": 500,
         "asin-traffic-data": 500,
@@ -49,7 +48,6 @@ def test_all_business_endpoints_define_default_page_sizes() -> None:
 def test_runtime_statistical_page_size_range_is_validated_before_request() -> None:
     keys = {
         "sales-performance",
-        "product-performance",
         "listing-performance",
         "asin-traffic-statistics",
         "asin-traffic-data",
@@ -183,13 +181,6 @@ def _minimal_statistical_payload(key: str, *, page_size: int) -> dict[str, Any]:
         return {
             **common,
             "groupByType": "seller_sku",
-            "showCurrencyType": "YUAN",
-            "beginDate": "2026-01-01",
-            "endDate": "2026-01-01",
-        }
-    if key == "product-performance":
-        return {
-            **common,
             "showCurrencyType": "YUAN",
             "beginDate": "2026-01-01",
             "endDate": "2026-01-01",

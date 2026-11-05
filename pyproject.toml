@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gerpgo-cli"
-version = "0.3.1"
+version = "0.3.2"
 description = "Cross-platform CLI and SDK for approved Gerpgo ERP interfaces"
 readme = "README.md"
 requires-python = ">=3.11"

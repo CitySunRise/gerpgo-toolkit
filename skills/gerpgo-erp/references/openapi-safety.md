@@ -1,54 +1,7 @@
-# OpenAPI safety
+# 查询与凭证
 
-Before a business query, resolve the profile as explicit `--profile`, then
-`GERPGO_PROFILE`, then `prod`. Do not ask for routine confirmation of `prod`.
-Confirm the scope of identifiers and dates when it is ambiguous or broad. Do
-not broaden shop, marketplace, warehouse, SKU, ASIN, or time ranges without
-user intent.
-
-Read `gerpgo-cli capabilities --format json` before constructing a query. Use
-only a registered field and the exact enum value reported there. An
-`official_not_published` enum status means the official document does not give
-a complete fixed list; do not invent one. A `dynamic_identifier: true` field is
-account-specific data, never a fixed enum. It may come from the user or the
-registered catalog resolver. Prefer exact-name flags when the user knows a
-name but not an ID. Missing required conditions must be asked for rather than
-discovered by repeated failing ERP requests.
-
-Catalog output is a strict SDK whitelist. Do not request, expose, save, or infer
-tokens, contact details, addresses, authorization state, server/account data,
-or other fields omitted by the CLI. Treat returned IDs/codes and names as
-business identifiers: do not place real values in source, logs, filenames,
-issues, tests, commits, or Skill examples.
-
-Use registered flags or a local JSON input file. Do not echo a potentially
-sensitive input file, and do not place ERP identifiers in temporary filenames.
-
-The CLI may retry only transient connection failures, HTTP 429, and HTTP 5xx
-for registered read-only endpoints. Authentication, validation, permission,
-and other HTTP 4xx failures require inspection rather than retries.
-
-Ordinary queries fetch one page. Explicit full-data intent uses
-`--all-pages --max-pages 100`. Check `pagination.complete=true` and
-`pagination.truncated=false` before analysis or export. If the first page shows
-that more than 100 pages are needed, stop on `GERPGO_PAGE_LIMIT_EXCEEDED` and
-show only the reported record count, estimated pages, and estimated seconds;
-ask whether the user wants to raise `--max-pages`. Do not raise it without that
-confirmation. When upstream omits `total`, reaching the limit while a full page
-is still returned is also an error, never a successful truncation.
-
-Never manually call successive page numbers to bypass the CLI's limiter. Full
-pagination must preserve the user's original markets, shops, SKUs, ASINs,
-warehouses, and date range exactly.
-
-Keep stdout available for the result envelope. Diagnostic output belongs on
-stderr. Do not enable verbose logs merely to discover credentials, tokens, or
-request headers.
-
-Never disable TLS verification. Use the profile's `system`, `direct`, or
-`custom` proxy mode instead. Direct mode is scoped to the Gerpgo client session;
-it must not change global proxy settings.
-
-## V0.3
-
-V0.3: --response raw preserves full business envelopes and unknown fields, with authentication credentials protected. --all-pages supports SDK-registered rows, records and cursor structures only. Five retained interfaces have current token-bucket metadata without a refill period; the historical 60-second local interval is separately recorded, not an invented official period.
+- 入参及枚举来自 `gerpgo-cli capabilities --format json` 和所选命令的 `--help`。动态 ID 从目录或相关业务查询取得。
+- 凭证在本机终端配置；真实业务数据、标识及响应不写入源码、测试、Skill 示例或发布产物。
+- 使用现有 CLI 命令，复杂参数通过 `--input`；保持用户指定的店铺、产品和日期范围。
+- 全量查询交给 CLI 的 `--all-pages --max-pages 100`，由其串行分页和限频。分析前检查完整性元数据；超过页数上限时再询问用户是否提高。
+- OpenAPI 与 Web 登录分别调用。正常结果用 stdout JSON；诊断日志不包含凭证或请求头。

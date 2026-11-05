@@ -312,44 +312,6 @@ def sales_performance(
     )
 
 
-@statistics_app.command("product-performance")
-def product_performance(
-    profile: str = typer.Option(
-        "prod", envvar="GERPGO_PROFILE", help=_PROFILE_HELP, show_default=True, show_envvar=True
-    ),
-    input_file: str | None = typer.Option(None, "--input"),
-    currency: str | None = typer.Option(
-        None, "--currency", help=_field_help("product-performance", "showCurrencyType")
-    ),
-    begin_date: str | None = typer.Option(
-        None, "--begin-date", help=_field_help("product-performance", "beginDate")
-    ),
-    end_date: str | None = typer.Option(
-        None, "--end-date", help=_field_help("product-performance", "endDate")
-    ),
-    page: int = typer.Option(1, min=1),
-    page_size: int = _page_size_option("product-performance"),
-    all_pages: bool = _all_pages_option(),
-    max_pages: int = _max_pages_option("product-performance"),
-    output_format: str = typer.Option("json", "--format"),
-    response_mode: str = typer.Option(
-        "data", "--response", help="data (compatible) or raw (full upstream envelope)."
-    ),
-) -> None:
-    _query(
-        "product-performance",
-        profile,
-        input_file,
-        {"showCurrencyType": currency, "beginDate": begin_date, "endDate": end_date},
-        page,
-        page_size,
-        all_pages,
-        max_pages,
-        output_format,
-        response_mode=response_mode,
-    )
-
-
 @statistics_app.command("listing-performance")
 def listing_performance(
     profile: str = typer.Option(

@@ -121,12 +121,12 @@ def test_json_output_falls_back_to_ascii_for_legacy_windows_console() -> None:
     rendered.encode("cp1252")
 
 
-def test_capabilities_lists_twenty_read_only_post_endpoints() -> None:
+def test_capabilities_lists_current_read_only_post_endpoints() -> None:
     result = runner.invoke(app, ["capabilities", "--format", "json"])
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["ok"] is True
-    assert len(payload["data"]["openapi"]) >= 20
+    assert len(payload["data"]["openapi"]) == 186
     assert {item["method"] for item in payload["data"]["openapi"]} == {"POST"}
     assert payload["data"]["webapi"]["business_endpoints"] == []
     assert payload["data"]["webapi"]["raw_request"] is False
@@ -224,7 +224,7 @@ def test_invalid_enum_returns_stable_json_without_network(monkeypatch: object) -
     ]
 
 
-def test_all_twelve_cli_queries_accept_minimal_registered_payloads(monkeypatch: object) -> None:
+def test_all_retained_cli_queries_accept_minimal_registered_payloads(monkeypatch: object) -> None:
     monkeypatch.setattr(  # type: ignore[attr-defined]
         openapi_commands,
         "openapi_service",
@@ -299,17 +299,6 @@ def test_all_twelve_cli_queries_accept_minimal_registered_payloads(monkeypatch: 
             "--market-id",
             "100001",
             "--start-date",
-            "2026-01-01",
-            "--end-date",
-            "2026-01-01",
-        ],
-        "product-performance": [
-            "openapi",
-            "statistics",
-            "product-performance",
-            "--currency",
-            "YUAN",
-            "--begin-date",
             "2026-01-01",
             "--end-date",
             "2026-01-01",
@@ -392,20 +381,6 @@ def test_statistical_cli_defaults_come_from_sdk_pagination_contract(
             [
                 "openapi",
                 "statistics",
-                "product-performance",
-                "--currency",
-                "YUAN",
-                "--begin-date",
-                "2026-01-01",
-                "--end-date",
-                "2026-01-01",
-            ],
-            100,
-        ),
-        (
-            [
-                "openapi",
-                "statistics",
                 "listing-performance",
                 "--group-by-type",
                 "asin",
@@ -460,7 +435,7 @@ def test_statistical_cli_defaults_come_from_sdk_pagination_contract(
 
 def test_statistical_cli_help_describes_runtime_range_and_full_pagination() -> None:
     cases = (
-        ("product-performance", "100"),
+        ("listing-performance", "100"),
         ("asin-traffic-data", "500"),
     )
     for command, default_page_size in cases:
@@ -469,7 +444,7 @@ def test_statistical_cli_help_describes_runtime_range_and_full_pagination() -> N
             ["openapi", "statistics", command, "--help"],
         )
         assert result.exit_code == 0, result.stdout
-        normalized = " ".join(Text.from_ansi(result.stdout).plain.split())
+        normalized = " ".join(Text.from_ansi(result.stdout).plain.replace("│", " ").split())
         assert "--page-size" in normalized
         assert "10<=x<=1000" in normalized
         assert f"[default: {default_page_size}]" in normalized

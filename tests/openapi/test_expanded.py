@@ -13,7 +13,7 @@ from gerpgo_cli.main import app
 from gerpgo_sdk.common.errors import ValidationError
 from gerpgo_sdk.common.redaction import BusinessResponse, protect_credentials
 from gerpgo_sdk.openapi import ENDPOINTS, OpenApiService, get_endpoint
-from gerpgo_sdk.openapi.expanded import WRITE_IDS, catalog_documents
+from gerpgo_sdk.openapi.expanded import EXCLUDED_READ_IDS, WRITE_IDS, catalog_documents, route
 
 
 def test_expanded_registry_contains_only_reviewed_reads_and_all_fields() -> None:
@@ -40,8 +40,73 @@ def test_expanded_registry_contains_only_reviewed_reads_and_all_fields() -> None
         assert spec.default_max_pages == 100
     assert len(routes) == len(set(routes))
     assert len(routes) > 100
-    for document_id in (1020, 1021, 4645, 6025, 2453, 4696, 4443, 102, 104, 101):
+    for document_id in (1020, 1021, 4645, 6025, 2453, 4443, 102, 104, 101):
         assert document_id in {spec.document_id for spec in ENDPOINTS.values()}
+
+
+def test_release_queries_match_recorded_successes() -> None:
+    from pathlib import Path
+
+    report = json.loads(Path("docs/live-verification-2026-11-05.json").read_text(encoding="utf-8"))
+    successful = {r["document_id"] for r in report["results"] if r["status"] == "success"}
+    earlier = {1020, 1021, 2453, 4645, 6025, 102, 66, 8655}
+    assert {s.document_id for s in ENDPOINTS.values()} == successful | earlier
+    assert len(ENDPOINTS) == 186
+
+
+def test_excluded_queries_have_no_sdk_or_cli_entry() -> None:
+    documents = {doc["id"]: doc for doc in catalog_documents()}
+    runner = CliRunner()
+    assert len(EXCLUDED_READ_IDS) == 24
+    for document_id in EXCLUDED_READ_IDS:
+        assert document_id not in {s.document_id for s in ENDPOINTS.values()}
+        module, command = route(documents[document_id])
+        key = f"{module}-{command}"
+        if document_id == 131:
+            command = key = "product-performance"
+        with pytest.raises(ValidationError, match="Unsupported OpenAPI"):
+            get_endpoint(key)
+        result = runner.invoke(app, ["openapi", module, command, "--help"])
+        assert result.exit_code != 0
+
+
+@pytest.mark.parametrize(
+    ("document_id", "payload", "field"),
+    [
+        (
+            1738,
+            {
+                "page": 1,
+                "pagesize": 10,
+                "reportDateStart": "2026-01-01 00:00:00",
+                "reportDateEnd": "2026-01-01 23:59:59",
+            },
+            "reportDateStart",
+        ),
+        (3188, {"page": 1, "pageSize": 10, "month": "2026-01"}, "month"),
+        (3846, {"page": 1, "pageSize": 10, "startTime": "2026-01-01 00:00:00"}, "startTime"),
+        (3847, {"page": 1, "pageSize": 10, "startTime": "2026-01-01 00:00:00"}, "startTime"),
+        (
+            6344,
+            {
+                "page": 1,
+                "pagesize": 10,
+                "costValue": 0,
+                "currency": "YUAN",
+                "reportMonth": "2026-01",
+            },
+            "reportMonth",
+        ),
+    ],
+)
+def test_official_example_dates_are_exposed_and_validated(
+    document_id: int, payload: dict[str, Any], field: str
+) -> None:
+    spec = next(s for s in ENDPOINTS.values() if s.document_id == document_id)
+    spec.validate_payload(payload)
+    assert spec.fields[field].date_format in spec.fields[field].help_text()
+    with pytest.raises(ValidationError, match="must use"):
+        spec.validate_payload({**payload, field: "EXAMPLE_INVALID_DATE"})
 
 
 def test_nested_object_array_fields_are_validated() -> None:

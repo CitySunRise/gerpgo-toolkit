@@ -29,12 +29,6 @@ EXPECTED = {
         "/operation/ads/adsKeywordAnalytical/page",
         60.0,
     ),
-    "product-performance": (
-        "产品表现",
-        131,
-        "/operation/sts/productAnalyzeMultiIndex/page",
-        60.0,
-    ),
     "listing-performance": (
         "商品表现",
         140,
@@ -170,7 +164,6 @@ EXPECTED_FIELDS = {
         "asinList",
     },
     "keyword-performance": {"page", "pagesize", "marketId", "startDateData", "endDateData"},
-    "product-performance": {"showCurrencyType", "beginDate", "endDate", "page", "pagesize"},
     "listing-performance": {
         "groupByType",
         "showCurrencyType",
@@ -339,7 +332,6 @@ def test_documented_enum_values_and_labels_are_complete() -> None:
     currency_fields = {
         ("sales-performance", "showCurrencyType"),
         ("profit-analysis-v2", "currency"),
-        ("product-performance", "showCurrencyType"),
         ("listing-performance", "showCurrencyType"),
         ("asin-traffic-statistics", "currency"),
         ("asin-traffic-data", "currency"),
@@ -381,13 +373,6 @@ def test_every_registered_enum_value_passes_validation() -> None:
             "monthDate": "2026-01",
             "startDate": "2026-01-01",
             "endDate": "2026-01-01",
-        },
-        "product-performance": {
-            "showCurrencyType": "YUAN",
-            "beginDate": "2026-01-01",
-            "endDate": "2026-01-01",
-            "page": 1,
-            "pagesize": 10,
         },
         "listing-performance": {
             "groupByType": "asin",

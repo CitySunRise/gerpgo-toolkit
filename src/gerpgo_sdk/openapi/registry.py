@@ -962,45 +962,6 @@ ENDPOINTS: MappingProxyType[str, EndpointSpec] = MappingProxyType(
             default_page_size=100,
             combination_constraints=("startDateData must equal endDateData.",),
         ),
-        "product-performance": EndpointSpec(
-            "product-performance",
-            "产品表现",
-            131,
-            "POST",
-            "/operation/sts/productAnalyzeMultiIndex/page",
-            60.0,
-            _fields(
-                {
-                    "showCurrencyType": _currency_field(
-                        "string", True, "显示币种类型 [参考Q&A-通用参数-币种]"
-                    ),
-                    "beginDate": FieldSpec(
-                        "string", True, "开始时间 [yyyy-MM-dd]", date_format="yyyy-MM-dd"
-                    ),
-                    "endDate": FieldSpec(
-                        "string", True, "结束时间 [yyyy-MM-dd]", date_format="yyyy-MM-dd"
-                    ),
-                    "page": _PAGE,
-                    "pagesize": FieldSpec(
-                        "int",
-                        True,
-                        "每页条数 [最大100条/页]",
-                        minimum=10,
-                        maximum=1000,
-                    ),
-                }
-            ),
-            official_max_page_size=100,
-            runtime_min_page_size=10,
-            runtime_max_page_size=1000,
-            default_page_size=100,
-            runtime_verified=True,
-            runtime_verified_date="2026-08-28",
-            runtime_verification_note=(
-                "Runtime error 40004 reports pagesize 10~1000; 10 and 100 were accepted, "
-                "while 500 returned an API error. Default 100 is verified."
-            ),
-        ),
         "listing-performance": EndpointSpec(
             "listing-performance",
             "商品表现",
@@ -1429,7 +1390,7 @@ from dataclasses import replace  # noqa: E402
 
 from .expanded import build_endpoints  # noqa: E402
 
-# Current public metadata replaced five historical rate rules with token buckets,
+# Current public metadata replaced four historical rate rules with token buckets,
 # without a refill period. Preserve the previously verified 60-second local guard;
 # do not present that guard as a current official refill interval.
 ENDPOINTS = MappingProxyType(
@@ -1448,7 +1409,7 @@ ENDPOINTS = MappingProxyType(
                 "current official token refill period is unpublished."
             ),
         )
-        if spec.document_id in {99, 100, 131, 122, 1018}
+        if spec.document_id in {99, 100, 122, 1018}
         else spec
         for key, spec in ENDPOINTS.items()
     }

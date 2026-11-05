@@ -26,6 +26,46 @@ MODULES = {
     "报表": "reports",
     "多平台": "multiplatform",
 }
+# Public documentation retained in the inventory, omitted from the current release.
+EXCLUDED_READ_IDS = frozenset(
+    {
+        8,
+        10,
+        16,
+        112,
+        119,
+        131,
+        694,
+        1024,
+        1049,
+        1052,
+        1080,
+        1455,
+        3419,
+        3493,
+        3496,
+        4139,
+        4482,
+        4696,
+        5070,
+        5098,
+        5383,
+        5385,
+        5516,
+        8808,
+    }
+)
+# Formats supplied by official request examples rather than field descriptions.
+EXAMPLE_DATE_FORMATS = {
+    (3846, "startTime"): "yyyy-MM-dd HH:mm:ss",
+    (3846, "endTime"): "yyyy-MM-dd HH:mm:ss",
+    (3847, "startTime"): "yyyy-MM-dd HH:mm:ss",
+    (3847, "endTime"): "yyyy-MM-dd HH:mm:ss",
+    (1738, "reportDateStart"): "yyyy-MM-dd HH:mm:ss",
+    (1738, "reportDateEnd"): "yyyy-MM-dd HH:mm:ss",
+    (3188, "month"): "yyyy-MM",
+    (6344, "reportMonth"): "yyyy-MM",
+}
 # These names describe business mutations, including the misleading scheduling endpoint.
 WRITE_IDS = {
     61,
@@ -99,13 +139,15 @@ def route(document: dict[str, Any]) -> tuple[str, str]:
     return module, command
 
 
-def field_spec(item: dict[str, Any]) -> FieldSpec:
+def field_spec(item: dict[str, Any], document_id: int | None = None) -> FieldSpec:
     description = item["description"]
-    children = tuple((child["name"], field_spec(child)) for child in item["children"])
+    children = tuple((child["name"], field_spec(child, document_id)) for child in item["children"])
     date_format = next(
         (fmt for fmt in ("yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd", "yyyy-MM") if fmt in description),
         None,
     )
+    if date_format is None and document_id is not None:
+        date_format = EXAMPLE_DATE_FORMATS.get((document_id, item["name"]))
     maximum = re.search(r"(?:最大|最多)\s*(\d+)", description)
     minimum = re.search(r"最小\s*(\d+)", description)
     recommended = re.search(r"建议不超过\s*(\d+)", description)
@@ -153,7 +195,7 @@ def build_endpoints(existing: dict[str, EndpointSpec]) -> dict[str, EndpointSpec
     existing_ids = {spec.document_id for spec in existing.values()}
     result = {}
     for doc in catalog_documents():
-        if doc["id"] in existing_ids or doc.get("implementation_blocker"):
+        if doc["id"] in existing_ids | EXCLUDED_READ_IDS or doc.get("implementation_blocker"):
             continue
         if doc["id"] in WRITE_IDS or doc["id"] == 596 or doc["method"] not in {"Post", "Get"}:
             continue
@@ -164,7 +206,7 @@ def build_endpoints(existing: dict[str, EndpointSpec]) -> dict[str, EndpointSpec
         ):
             continue
         module, command = route(doc)
-        fields = {item["name"]: field_spec(item) for item in doc["request"]}
+        fields = {item["name"]: field_spec(item, doc["id"]) for item in doc["request"]}
         if any(_needs_enum_review(field) for field in fields.values()):
             continue
         nested_pagination = dict(fields["pageInfo"].children) if "pageInfo" in fields else {}

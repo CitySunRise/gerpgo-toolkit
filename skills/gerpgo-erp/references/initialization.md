@@ -1,60 +1,32 @@
-# Initialization
+# 初始化
 
-Profile selection always follows this precedence:
+profile 优先级：显式 `--profile NAME` > `GERPGO_PROFILE` > `prod`。未另作选择时直接使用 prod，无需每次确认。
 
-1. Explicit `--profile NAME`.
-2. `GERPGO_PROFILE`.
-3. Default `prod`.
-
-When the user does not specify a profile, select `prod` without asking for
-confirmation. Only an explicit request for another profile overrides it. CLI
-commands may pass `--profile prod` internally, but users do not need to mention
-the profile in their prompt.
-
-Start with local, non-secret inspection:
+先查看本地状态：
 
 ```shell
 gerpgo-cli version
-gerpgo-cli capabilities --format json
 gerpgo-cli profile list --format json
 ```
 
-If the default `prod` profile does not exist, do not create it, switch profiles,
-or fall back silently. Ask the user to run this in their own terminal:
+缺少 prod 时，让用户在自己的终端运行：
 
 ```shell
 gerpgo-cli profile init prod
 ```
 
-The interactive initializer stores App ID, App Key, Web username, and Web
-password in macOS Keychain or Windows Credential Manager. It stores only
-non-secret settings in the profile file. Do not request those values in chat
-and do not turn on shell tracing while the user initializes a profile.
+交互输入开放 App ID/App Key；需要 Web 登录时同时配置 Web 账号。凭证保存在 macOS Keychain 或 Windows Credential Manager，profile JSON 只存非敏感设置。不要在聊天或命令参数中填写凭证，也不要自动新建或切换 profile。
 
-For a non-interactive machine where the user has already populated approved
-environment variables:
+已通过环境变量配置凭证的机器可运行：
 
 ```shell
 gerpgo-cli profile init prod --from-env --enable-web
 ```
 
-Do not print the environment variables. After initialization, verify locally:
+初始化后运行本地自检：
 
 ```shell
-gerpgo-cli profile status prod --format json
-gerpgo-cli doctor --profile prod --read-only --format json
+gerpgo-cli doctor --read-only --format json
 ```
 
-Only perform connectivity when the user authorizes a live authentication
-request:
-
-```shell
-gerpgo-cli doctor --profile prod --connectivity --read-only --format json
-```
-
-The connectivity check obtains an OpenAPI token but does not query business
-data. Web login is always a separate explicit command.
-
-## V0.3
-
-V0.3 keeps profile precedence and existing keyring credentials. Expanded OpenAPI queries need OpenAPI credentials only; raw business JSON never includes authentication tokens.
+需要测试开放认证连接时增加 `--connectivity`；Web 登录使用 `gerpgo-cli web auth login`。
