@@ -2,12 +2,18 @@
 
 from datetime import date
 from pathlib import Path
+from runpy import run_path
 from types import SimpleNamespace
 
 import pytest
 
 from gerpgo_sdk.openapi import ENDPOINTS
-from scripts.validate_live_readonly import MissingCondition, Probe
+
+_probe_module = run_path(
+    str(Path(__file__).resolve().parents[2] / "scripts/validate_live_readonly.py")
+)
+MissingCondition = _probe_module["MissingCondition"]
+Probe = _probe_module["Probe"]
 
 
 def offline_probe(tmp_path: Path) -> Probe:
